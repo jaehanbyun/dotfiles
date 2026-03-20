@@ -217,7 +217,7 @@ Cross-session continuity:
 <git_commit_messages>
 Always use the /commit skill for commits. It handles Korean encoding safely (Write tool → git commit -F).
 
-Manual commits only when /commit skill is unavailable. In that case:
+Manual commits only whennpx @\_davideast/stitch-mcp init /commit skill is unavailable. In that case:
 
 1. Use Write tool to create temp file with commit message (never bash heredoc for Korean)
 2. `git commit -F <file>` then clean up
