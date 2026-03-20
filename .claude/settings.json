@@ -1,0 +1,99 @@
+{
+  "$schema": "https://json.schemastore.org/claude-code-settings.json",
+  "env": {
+    "ENABLE_LSP_TOOL": "1",
+    "MAX_THINKING_TOKENS": "16000",
+    "CLAUDE_CODE_MAX_OUTPUT_TOKENS": "128000",
+    "BASH_DEFAULT_TIMEOUT_MS": "120000",
+    "BASH_MAX_TIMEOUT_MS": "600000",
+    "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
+    "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1"
+  },
+  "permissions": {
+    "allow": [
+      "Bash(npm run lint)",
+      "Bash(npm run test:*)",
+      "Bash(npm test:*)",
+      "WebFetch",
+      "Bash(git status)",
+      "Bash(git diff:*)",
+      "Bash(git log:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(git push)",
+      "Bash(git config:*)",
+      "Bash(gh:*)",
+      "Bash(node:*)",
+      "Bash(which:*)",
+      "Bash(pwd)",
+      "Bash(ls:*)",
+      "mcp__playwright__browser_navigate",
+      "mcp__playwright__browser_close",
+      "mcp__playwright__browser_wait_for",
+      "mcp__playwright__browser_click",
+      "mcp__playwright__browser_snapshot"
+    ],
+    "deny": [
+      "Bash(rm -rf /)"
+    ],
+    "ask": []
+  },
+  "hooks": {
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "terminal-notifier -title \"Claude Code\" -message \"Claude 응답이 완료되었습니다\" -sound default -timeout 30"
+          }
+        ]
+      }
+    ]
+  },
+  "statusLine": {
+    "type": "command",
+    "command": "bash -c '\"/opt/homebrew/bin/node\" \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)dist/index.js\"'"
+  },
+  "enabledPlugins": {
+    "claude-hud@claude-hud": true,
+    "clarify@team-attention-plugins": true,
+    "agent-council@team-attention-plugins": true,
+    "code-review@claude-code-plugins": true
+  },
+  "language": "ko",
+  "spinnerVerbs": {
+    "mode": "replace",
+    "verbs": [
+      "생각하는 중",
+      "분석하는 중",
+      "코드 읽는 중",
+      "파일 탐색 중",
+      "작성하는 중",
+      "검토하는 중",
+      "실행하는 중",
+      "검색하는 중",
+      "변경 적용 중",
+      "테스트 확인 중",
+      "구조 파악 중",
+      "계획 수립 중",
+      "의존성 추적 중",
+      "리팩토링 중",
+      "디버깅 중",
+      "패턴 매칭 중",
+      "컨텍스트 수집 중",
+      "해결책 모색 중",
+      "최적화 중",
+      "연결고리 찾는 중"
+    ]
+  },
+  "autoMemoryEnabled": true,
+  "skipDangerousModePermissionPrompt": true,
+  "mcpServers": {
+    "playwright": {
+      "url": "http://localhost:8931/mcp",
+      "args": [
+        "@playwright/mcp@0.0.68"
+      ]
+    }
+  }
+}

@@ -9,5 +9,8 @@ msbaek-dotfiles/
 *.key
 *.p12
 
+# Plugin repos (managed externally)
+.claude/skills/gstack/
+
 # OS
 .DS_Store
