@@ -14,3 +14,4 @@ msbaek-dotfiles/
 
 # OS
 .DS_Store
+.sync.log

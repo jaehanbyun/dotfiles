@@ -21,7 +21,7 @@ done
 for d in $CLAUDE_DIRS; do
   if [ -d "$CLAUDE_DIR/$d" ]; then
     mkdir -p "$DOTFILES_DIR/.claude/$d"
-    rsync -a --delete \
+    rsync -a --delete --no-links \
       --exclude='*.tmpl' \
       --exclude='gstack/' \
       --exclude='browse/' \
