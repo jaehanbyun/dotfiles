@@ -98,6 +98,28 @@ stow -R .
 stow -D .
 ```
 
+## Claude Code Setup
+
+`.claude/` contains global Claude Code configuration (CLAUDE.md, settings, agents, commands, custom skills, hooks). Since `~/.claude/` mixes tracked config with runtime data (history, cache, plugins), Stow can't manage it directly.
+
+```bash
+# Deploy Claude config
+./install-claude.sh
+```
+
+**Plugins** are auto-installed by Claude on first run based on `enabledPlugins` in `settings.json`. No need to track plugin files — only custom skills are in dotfiles.
+
+### Restore on a new machine
+
+```bash
+git clone https://github.com/jaehanbyun/dotfiles.git ~/dotfiles
+cd ~/dotfiles
+brew bundle --file=Brewfile    # install dependencies
+stow .                         # deploy dotfiles
+./install-claude.sh            # deploy Claude config
+claude                         # first run → plugins auto-install
+```
+
 ## Credits
 
 Initially inspired by [msbaek/dotfiles](https://github.com/msbaek/dotfiles).
