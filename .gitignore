@@ -1,1 +1,13 @@
 msbaek-dotfiles/
+
+# Sensitive files
+.gitconfig.user
+.env*
+!.env.example
+.ssh/
+*.pem
+*.key
+*.p12
+
+# OS
+.DS_Store

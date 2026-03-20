@@ -1,0 +1,47 @@
+# Theme
+theme = iTerm2 Solarized Light
+background = FDF6E3
+foreground = 657B83
+
+# Font
+font-family = "Hack Nerd Font"
+font-family = "Sarasa Fixed K"
+font-size = 30
+font-thicken = true
+# font-synthetic-style = bold,italic,bold-italic
+
+# Cursor
+cursor-style = bar
+cursor-style-blink = true
+
+# Window
+window-padding-x = 16
+window-padding-y = 12
+window-padding-balance = true
+window-save-state = always
+window-colorspace = "display-p3"
+window-decoration = false
+macos-titlebar-style = hidden
+background-opacity = 1
+
+# Mouse
+focus-follows-mouse = true
+mouse-hide-while-typing = true
+mouse-scroll-multiplier = 2
+
+# Font and cell adjustments for Korean text
+adjust-cell-height = 15%
+adjust-cell-width = 0%
+adjust-font-baseline = -2%
+grapheme-width-method = unicode
+
+# Shell
+shell-integration-features = no-cursor, sudo,no-title
+
+# Keybindings
+keybind = cmd+s>r=reload_config
+keybind = cmd+s>x=close_surface
+keybind = cmd+s>n=new_window
+keybind = cmd+s>c=new_tab
+keybind = cmd+s>shift+l=next_tab
+keybind = super+d=unbind
