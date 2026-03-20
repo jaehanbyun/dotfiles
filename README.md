@@ -76,7 +76,7 @@ stow .
 │   ├── skhd/           # hotkey daemon
 │   └── ...             # alacritty, kitty, yazi, zed, etc.
 ├── .zsh.after/
-│   ├── msbaek.zsh      # base config (upstream)
+│   ├── base.zsh        # base shell config
 │   └── byeonjaehan.zsh # personal overrides
 ├── .zshrc              # shell entry point
 ├── .gitconfig          # git config (user info via include)
@@ -100,4 +100,4 @@ stow -D .
 
 ## Credits
 
-Based on [msbaek/dotfiles](https://github.com/msbaek/dotfiles), customized for personal use.
+Initially inspired by [msbaek/dotfiles](https://github.com/msbaek/dotfiles).

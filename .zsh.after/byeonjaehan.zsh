@@ -1,5 +1,5 @@
 # byeonjaehan custom aliases & overrides
-# Override or extend msbaek.zsh base settings
+# Override or extend base.zsh settings
 
 # Claude Code aliases
 alias clc='claude -c'
