@@ -1,85 +1,190 @@
 ---
 argument-hint: "[kr|en] [transcript or YouTube URL]"
-description: "Youtube URL 또는 트랜스크립트 → 백그라운드로 번역/정리 → obsidian 문서 생성 (첫 번째 인자로 언어 지정: kr|en, 기본값: en)"
+description: "Youtube URL 또는 트랜스크립트를 입력받아 번역, 정리해서 obsidian 문서로 저장 (첫 번째 인자로 언어 지정: kr|en, 기본값: en)"
 color: yellow
 ---
 
-# YouTube Summarize - $ARGUMENTS
+# article summarize - $ARGUMENTS
 
-YouTube URL 또는 트랜스크립트를 받아 번역/정리하여 Obsidian 문서를 생성합니다.
-
-## 공통 규칙
-
-`~/.claude/commands/obsidian/shared-rules.md`의 모든 규칙을 따른다.
-(번역 규칙, frontmatter, target audience, related notes, wikilink, atomic note, progress, 백그라운드 실행 모델)
-
-## YouTube 요약 구조
-
-### 1. 핵심 요약
-전체 내용을 2-3 문단으로 요약.
-
-### 2. 상세 내용
-영상 흐름에 따라 시간 기반으로 섹션을 나누고, 각 섹션에 타임스탬프 범위를 표기.
-
-형식:
-### [00:00 - 05:30] 섹션 제목
-내용 정리...
-
-### [05:30 - 12:15] 섹션 제목
-내용 정리...
-
-타임스탬프는 transcript의 start 시간 데이터를 활용한다.
-각 섹션의 시작 시간은 해당 섹션 첫 발화의 start, 종료 시간은 다음 섹션 첫 발화의 start로 결정.
-
-### 3. 시사점
-원문에 명시된 권장사항, 교훈, 실무 적용 사례를 5-7개 bullet point로 정리.
-각 시사점에는 원문에서 인용 가능한 근거를 함께 제시.
+제공되는 YouTube URL 또는 트랜스크립트를 번역/정리해서 obsidian 문서를 생성합니다.
 
 ## 언어 옵션 처리
 
-첫 번째 인자로 언어 옵션 확인 (기본값: en):
-- `kr` 또는 `ko`: 한글 트랜스크립트 우선 다운로드
-- `en`: 영어 트랜스크립트 우선 다운로드 (기본값)
-- 첫 단어가 언어 옵션이 아니면 전체를 내용으로 처리
+```bash
+# 첫 번째 인자로 언어 옵션 확인 (기본값: en)
+LANG_OPTION="en"
+CLEANED_ARGUMENTS="$ARGUMENTS"
 
-## 콘텐츠 추출
+# 첫 번째 단어가 언어 옵션인지 확인
+FIRST_WORD=$(echo "$ARGUMENTS" | awk '{print $1}')
+REST_ARGUMENTS=$(echo "$ARGUMENTS" | sed 's/^[^ ]* *//')
 
-### YouTube URL인 경우
+if [[ "$FIRST_WORD" == "kr" ]] || [[ "$FIRST_WORD" == "ko" ]]; then
+    LANG_OPTION="kr"
+    CLEANED_ARGUMENTS="$REST_ARGUMENTS"
+elif [[ "$FIRST_WORD" == "en" ]]; then
+    LANG_OPTION="en"
+    CLEANED_ARGUMENTS="$REST_ARGUMENTS"
+else
+    # 첫 번째 단어가 언어 옵션이 아니면 전체를 내용으로 처리 (기본 영어)
+    LANG_OPTION="en"
+    CLEANED_ARGUMENTS="$ARGUMENTS"
+fi
 
-`~/bin/download-youtube-transcript` 스크립트를 사용하여 JSON 형식으로 메타데이터와 트랜스크립트 추출.
+echo "언어 옵션: $LANG_OPTION"
+echo "처리할 내용: $CLEANED_ARGUMENTS"
+```
+
+먼저 입력 데이터 타입을 확인하겠습니다:
 
 ```bash
-# 언어 옵션에 따라 실행 (첫 번째 언어 실패 시 대체 언어로 재시도)
-if [ "$LANG_OPTION" = "kr" ]; then
-    YOUTUBE_DATA=$(~/bin/download-youtube-transcript -f json -l kr "$URL" 2>/dev/null || ~/bin/download-youtube-transcript -f json -l en "$URL")
+# YouTube URL 패턴 확인
+if [[ "$CLEANED_ARGUMENTS" == *"youtube.com/watch?v="* ]] || [[ "$CLEANED_ARGUMENTS" == *"youtu.be/"* ]]; then
+    echo "YouTube URL이 감지되었습니다. 메타데이터와 트랜스크립트를 다운로드합니다."
+
+    # Python 스크립트로 JSON 형식 데이터 추출 (언어 옵션 적용)
+    cd ~/git/lib/download-youtube-transcript
+    if [ "$LANG_OPTION" = "kr" ]; then
+        echo "한글 트랜스크립트로 다운로드 시도"
+        YOUTUBE_DATA=$(python script.py -l kr "$CLEANED_ARGUMENTS" 2>/dev/null || python script.py -l en "$CLEANED_ARGUMENTS")
+    else
+        echo "영어 트랜스크립트로 다운로드 시도"
+        YOUTUBE_DATA=$(python script.py -l en "$CLEANED_ARGUMENTS" 2>/dev/null || python script.py -l kr "$CLEANED_ARGUMENTS")
+    fi
+
+    if [ $? -eq 0 ] && [ -n "$YOUTUBE_DATA" ]; then
+        echo "YouTube 데이터 추출 완료."
+        echo "$YOUTUBE_DATA" > /tmp/youtube_data.json
+    else
+        echo "YouTube 데이터 추출 실패. 트랜스크립트로 처리합니다."
+        TRANSCRIPT="$CLEANED_ARGUMENTS"
+    fi
 else
-    YOUTUBE_DATA=$(~/bin/download-youtube-transcript -f json -l en "$URL" 2>/dev/null || ~/bin/download-youtube-transcript -f json -l kr "$URL")
+    echo "트랜스크립트 데이터로 처리합니다."
+    TRANSCRIPT="$CLEANED_ARGUMENTS"
 fi
 ```
 
-- 고유 임시 파일: `/tmp/youtube_data_${VIDEO_ID}_${TIMESTAMP}.json` (동시 실행 충돌 방지)
-- 동시 실행 가능 (stateless HTTP, 직렬화 불필요)
+## 작업 프로세스
 
-### 트랜스크립트인 경우
+1. **입력 데이터 분석 및 처리**
+   - 첫 번째 인자로 언어 옵션 파싱: `kr`/`ko`/`en` 중 하나, 없으면 영어 우선 (기본값)
+   - 첫 번째 단어가 언어 옵션이면 제거하고 나머지를 실제 내용으로 처리
+   - 정제된 내용이 YouTube URL인지 확인 (youtube.com/watch?v=, youtu.be/ 패턴)
+   - URL인 경우:
+     - `~/git/lib/download-youtube-transcript`의 `python script.py` 명령어를 사용하여 JSON 형식으로 메타데이터와 트랜스크립트 추출
+     - 언어 옵션에 따라 `-l kr` (한글 우선) 또는 `-l en` (영어 우선, 기본값)으로 실행
+     - 첫 번째 언어 실패 시 대체 언어로 재시도
+   - 트랜스크립트인 경우: 기존 방식대로 직접 처리
 
-입력 데이터를 직접 처리.
+2. **메타데이터 자동 생성** (URL인 경우)
+   - id: 동영상 제목
+   - aliases: 동영상 제목의 한국어 번역 (번역 필요한 경우)
+   - author: 채널명 (소문자, 공백은 '-'로 변경)
+   - created_at: 현재 obsidian 파일 생성 시점
+   - source: 원본 YouTube URL
 
-### 메타데이터 자동 생성 (URL인 경우)
+3. **번역 및 요약**
+   - 아래 규칙(`## 문서 번역 및 요약 규칙`)에 따라 내용을 정리해서 yaml frontmatter를 포함한 obsidian file로 저장
 
-- id: 동영상 제목 (자동 추출)
-- aliases: 동영상 제목의 한국어 번역
-- author: 채널명 (소문자, 공백은 '-'로 변경)
-- source: 원본 YouTube URL
+4. **태그 부여**
+   - hierarchical tagging 규칙은 `~/.claude/commands/obsidian/add-tag.md` 에 정의된 규칙을 준수
 
-## 처리 프로세스 요약
+## yaml frontmatter 예시
 
-1. (백그라운드 모드 시) Progress 파일 생성 → subagent 시작 → 즉시 반환
-2. 언어 옵션 파싱
-3. YouTube 데이터 추출 (download-youtube-transcript)
-4. Wikilink 후보 파악 (vis search)
-5. 번역/요약 (shared-rules + youtube 구조, 타임스탬프 포함, wikilink 포함)
-6. 문서 저장 ($VAULT_ROOT/001-INBOX/)
-7. Related Notes 추가 (vis search)
-8. Atomic Note 후보 추가
-9. (백그라운드 모드 시) Progress 파일 업데이트
-10. 임시 파일 정리 (`rm -f "$YOUTUBE_TEMP_FILE"`)
+### YouTube URL인 경우 자동 생성되는 frontmatter:
+
+```yaml
+id: How to Implement Clean Architecture in Spring Boot
+aliases: Spring Boot에서 Clean Architecture 구현 방법
+tags:
+  - architecture/clean-architecture/spring-implementation
+  - architecture/hexagonal/ports-adapters
+  - frameworks/spring-boot/architecture
+  - development/practices/clean-code
+author: coding-with-john
+created_at: 2025-09-15 16:30
+related: []
+source: https://www.youtube.com/watch?v=lqQ_NL4y5Qg
+```
+
+### 트랜스크립트인 경우 수동 입력 필요한 frontmatter:
+
+```yaml
+id: 10 Essential Software Design Patterns used in Java Core Libraries
+aliases: Java 코어 라이브러리에서 사용되는 10가지 필수 소프트웨어 디자인 패턴
+tags:
+  - patterns/design-patterns/java-implementation
+  - patterns/creational/factory-singleton-builder
+  - patterns/structural/adapter-facade-proxy
+  - patterns/behavioral/observer-strategy-template
+  - java/core-libraries/design-patterns
+  - frameworks/java/standard-library
+  - development/practices/object-oriented-design
+  - architecture/patterns/gof-patterns
+author: ali-zeynalli
+created_at: 2025-09-04 11:39
+related: []
+source: https://azeynalli1990.medium.com/10-essential-software-design-patterns-used-in-java-core-libraries-bb8156ae279b
+```
+
+### Frontmatter 필드 설명:
+
+- **id**: YouTube 제목 (자동 추출) 또는 문서에서 발견한 제목
+- **aliases**: YouTube 제목의 한국어 번역 (번역 필요 시) 또는 문서 제목의 한국어 번역
+- **author**: YouTube 채널명 (자동 추출, 소문자, 공백은 '-'로 변경) 또는 문서 작성자
+- **created_at**: obsidian 파일 생성 시점 (자동 생성)
+- **source**: YouTube URL (자동 추출) 또는 문서 URL
+
+## 문서 번역 및 요약 규칙
+
+```
+Target Audience:
+- Obtained a Computer Science degree and a master's degree in Korea
+- Has worked as a software developer for over 25 years, developing and maintaining various services and products
+- Cannot quickly read or watch content in English
+- Interested in sustainable software system development, OOP, developer capability enhancement, Java, TDD, Design Patterns, Refactoring, DDD, Clean Code, Architecture (MSA, Modulith, Layered, Hexagonal, vertical slicing), Code Review, Agile (Lean) Development, Spring Boot, building development organizations and improving development culture, developer growth, and coaching
+- Enjoys studying and organizing related topics for use in work and lectures
+
+Translation Guidelines:
+- Translate the input text to Korean
+- For technical terms and programming-related concepts, include the original English term in parentheses when first mentioned
+- Include as many original English terms as possible
+- Prioritize literal translation over free translation, but use natural Korean expressions
+- Use technical terminology and include code examples or diagrams when necessary
+- Explicitly mark any uncertain parts
+
+Summarization Structure:
+1. Highlights/Summary: Summarize the entire content in 2-3 paragraphs
+2. Detailed Summary: Divide the content into sections of about 5 minutes each, and summarize each section in 2-3 detailed paragraphs
+3. Conclusion and Personal Views: Summarize the entire content in 5-10 statements and provide insights on why this information is important
+
+Precautions:
+- Explicitly mark any uncertainties in the translation and summarization process
+- Use accurate and professional terminology as much as possible
+- Balance the content of each section to avoid being too short or too long
+- Include actual code examples or pseudocode to make explanations more concrete
+- Explain complex concepts using analogies or examples for easier understanding
+- Clearly state when you don't know certain information
+- Self-verify the final information before responding
+- Include all example codes in the document without omission
+
+When you have completed the translation and summarization, present your work in the following artifact style format:
+
+<translation_and_summary>
+<highlights>
+[Insert 2-3 paragraphs summarizing the entire content]
+</highlights>
+
+<detailed_summary>
+[Insert detailed summary divided into sections, with 2-3 paragraphs for each section]
+</detailed_summary>
+
+<conclusion_and_views>
+[Insert 5-10 summary statements and insights on the importance of the information]
+</conclusion_and_views>
+</translation_and_summary>
+
+Remember to adhere to all the guidelines and precautions mentioned above throughout your translation and summarization
+process.
+```

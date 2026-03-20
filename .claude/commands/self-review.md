@@ -1,0 +1,1 @@
+../../projects/dotfiles/.claude/commands/self-review.md

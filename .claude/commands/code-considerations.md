@@ -1,0 +1,1 @@
+/Users/byeonjaehan/projects/dotfiles/.claude/commands/code-considerations.md

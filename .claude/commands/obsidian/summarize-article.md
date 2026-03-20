@@ -1,117 +1,98 @@
 ---
 argument-hint: "[url]"
-description: "기술 문서 URL → 백그라운드로 번역/정리 → obsidian 문서 생성"
+description: "기술 문서 URL을 입력받아 번역, 정리해서 obsidian 문서 로 저장"
+allowed-tools: playwright
 color: yellow
 ---
 
-# Article Summarize - $ARGUMENTS
+# article summarize - $ARGUMENTS
 
-기술 문서 URL을 받아 번역/정리하여 Obsidian 문서를 생성합니다.
+지정된 문서를 **playwright tool**로 읽고, 번역/정리해서 obsidian 문서를 생성합니다.
 
-## 공통 규칙
+## 작업 프로세스
 
-`~/.claude/commands/obsidian/shared-rules.md`의 모든 규칙을 따른다.
-(번역 규칙, frontmatter, target audience, related notes, wikilink, atomic note, progress, 백그라운드 실행 모델)
+1. $ARGUMENTS 로 전달된 url의 문서를 playwright tool로 읽어서
+   a. url에 접근할 때는 반드시 playwright tool을 사용해
+   b. 로그인 등이 필요한 경우 fetch tool을 사용하면 url에 접근이 안될 수 있어
+2. 아래 규칙(`## 문서 번역 및 요약 규칙`)에 따라 내용을 정리해서 yaml frontmatter를 포함한 obsidian file로
+   저장
+3. hierarchical tagging 규칙은 `~/.claude/commands/obsidian/add-tag.md` 에 정의된 규칙을 준수
+4. 문서에 존재하는 이미지를 ATTACHMENTS 폴더에 저장하고, 이번에 작성하는 옵시디언 문서에 포함시켜줘. **이미지는 하나도 누락 없이 포함**되었으면 해
 
-## Article 요약 구조
+## yaml frontmatter 예시
 
-### 1. 핵심 요약
-전체 내용을 2-3 문단으로 요약.
-
-### 2. 상세 내용
-원문의 heading 구조(H2/H3)를 그대로 따라가며 각 섹션을 상세하게 정리.
-원문에 heading이 없는 경우, 논리적 주제 단위로 나눈다.
-
-### 3. 시사점
-원문에 명시된 권장사항, 교훈, 실무 적용 사례를 5-7개 bullet point로 정리.
-각 시사점에는 원문에서 인용 가능한 근거를 함께 제시.
-
-## 콘텐츠 추출 (Playwright MCP)
-
-### 전제 조건: Playwright 영구 프로필
-
-이 스킬은 Playwright MCP가 영구 프로필(`~/.playwright-profile`)로 Chrome을 실행합니다.
-- 로그인이 필요한 사이트는 **최초 1회** Playwright Chrome에서 로그인하면 세션이 유지됩니다.
-
-### Playwright MCP 서버 확인
-
-콘텐츠 추출 시작 전에 Playwright MCP HTTP 서버가 실행 중인지 확인한다.
-
-```bash
-~/bin/playwright-mcp-server.sh
+```yaml
+id: 10 Essential Software Design Patterns used in Java Core Libraries
+aliases: Java 코어 라이브러리에서 사용되는 10가지 필수 소프트웨어 디자인 패턴
+tags:
+  - patterns/design-patterns/java-implementation
+  - patterns/creational/factory-singleton-builder
+  - patterns/structural/adapter-facade-proxy
+  - patterns/behavioral/observer-strategy-template
+  - java/core-libraries/design-patterns
+  - frameworks/java/standard-library
+  - development/practices/object-oriented-design
+  - architecture/patterns/gof-patterns
+author: ali-zeynalli
+created_at: 2025-09-04 11:39
+related: []
+source: https://azeynalli1990.medium.com/10-essential-software-design-patterns-used-in-java-core-libraries-bb8156ae279b
 ```
 
-실패 시: 에러 보고 후 중단 (progress 파일을 `failed`로 업데이트)
+- id: 문서에서 발견한 제목
+- aliases: 문서에서 발견한 제목의 한국어 번역
+- author: 문서에서 발견한 작성자 (작성자가 명확하지 않으면 공백). 이름은 다
+  소문자, 공백은 '-'로 변경
+- created_at: obsidian 파일 생성 시점
+- source: 문서 url
 
-### Step 1: 페이지 접근
+## 문서 번역 및 요약 규칙
 
-`mcp__playwright__browser_navigate`로 URL에 접근.
-실패 시: 에러 보고 후 중단 (progress 파일을 `failed`로 업데이트)
-
-### Step 2: 메타데이터 추출
-
-`mcp__playwright__browser_run_code`로 title, author, 이미지 목록 추출.
-
-```javascript
-async (page) => {
-  const title = await page.title();
-  const metadata = await page.evaluate(() => {
-    const authorMeta = document.querySelector(
-      'meta[name="author"], meta[property="article:author"], meta[name="twitter:creator"]'
-    );
-    const authorEl = document.querySelector(
-      '[rel="author"], .author, .byline, [itemprop="author"]'
-    );
-    const author = authorMeta?.content || authorEl?.textContent?.trim() || '';
-    const images = [...document.querySelectorAll('article img, main img, [role="main"] img, .post-content img, .article-content img, .entry-content img')]
-      .map(img => ({ src: img.src, alt: img.alt || '' }))
-      .filter(img => img.src && !img.src.startsWith('data:'));
-    return { author, images };
-  });
-  return { title, ...metadata };
-}
 ```
+You are a professional translator and software development expert with a degree in computer science. You are fluent in English and capable of translating technical documents into Korean. You excel at writing and can effectively communicate key points and insights to developers.
 
-실패 시: snapshot만으로 진행
+Your task is to translate and summarize the following technical document according to these instructions. Please provide a detailed summary of approximately 4000 characters, using professional terminology from a software development perspective. Do not add any information that is not present in the original document.
 
-### Step 3: 본문 추출
+Here is the technical document to be translated and summarized:
+<technical_document>
+{{TECHNICAL_DOCUMENT}}
+</technical_document>
 
-`mcp__playwright__browser_snapshot`으로 페이지 콘텐츠를 파일로 저장.
-- `filename` 파라미터 사용: `/tmp/article-snapshot-{timestamp}.md`
-- 저장된 파일을 Read tool로 읽어서 번역/요약에 사용
+Translation requirements:
+1. Translate the input text into Korean.
+2. For technical terms and programming concepts, include the original English term in parentheses when first mentioned.
+   - Include as many original terms as possible.
+3. Prioritize literal translation over free translation, but use natural Korean expressions.
+4. Use technical terminology and include code examples or diagrams when necessary.
+5. Explicitly mark any uncertain parts.
 
-### Step 4: 로그인 wall 감지
+Summary structure:
 
-`~/.claude/auth-registry.json` 파일이 존재하면 로그인 wall을 감지한다.
+## 1. Highlights/Summary: Summarize the entire content in 2-3 paragraphs.
 
-1. URL 도메인을 auth-registry.json의 키와 매칭
-2. 매칭된 사이트가 있으면: snapshot 텍스트에서 `detect_patterns` 검색
-3. 패턴이 감지되면: 사용자에게 `login_guide` 메시지 표시, 로그인 완료 후 재시도
-4. 미등록 사이트에서 snapshot 본문이 200자 미만이면: 로그인 필요 가능성 안내
+## 2. Detailed Summary: Divide the content into sections based on subheadings. For each section, provide a detailed summary in 2-3 paragraphs.
 
-### Step 5: 탭 정리
+## 3. Conclusion and Personal View:
+   - Summarize the entire content in 5-10 statements.
+   - Provide your perspective on why this information is important.
 
-작업 완료 후 `mcp__playwright__browser_close`로 현재 페이지를 닫는다.
-브라우저 프로세스는 HTTP 서버가 관리하므로 별도 종료 불필요.
+Important considerations:
+- The target audience is a Korean software developer with over 25 years of experience, who obtained a Computer Science degree and a master's degree in Korea, specializing in object-oriented analysis & design and software architecture.
+- They have extensive experience in developing and operating various services and products.
+- They are particularly interested in sustainable software system development, OOP, developer capability enhancement, Java, TDD, Design Patterns, Refactoring, DDD, Clean Code, Architecture (MSA, Modulith, Layered, Hexagonal, vertical slicing), Code Review, Agile (Lean) Development, Spring Boot, building development organizations, improving development culture, developer growth, and coaching.
+- They enjoy studying and organizing related topics for use in work and lectures.
+- They cannot quickly read English text or watch English videos.
 
-## 이미지 처리
+Constraints:
+- Explicitly mark any uncertainties in the translation and summary process.
+- Use accurate and professional terminology as much as possible.
+- Balance the content of each section to avoid being too short or too long.
+- Include actual code examples or pseudocode to make explanations more concrete.
+- Use analogies or examples to explain complex concepts in an easy-to-understand manner.
+- Write in artifact format
+- If you don't know certain information, clearly state that you don't know.
+- Self-verify the final information before answering.
+- Include all example codes in the document without omission.
 
-추출된 이미지 목록을 ATTACHMENTS 폴더에 저장하고 문서에 포함.
-- 이미지는 하나도 누락 없이 포함
-- 다운로드: `curl -sL -o $VAULT_ROOT/ATTACHMENTS/{filename} "{image_url}"`
-
-## 처리 프로세스 요약
-
-1. (백그라운드 모드 시) Progress 파일 생성 → subagent 시작 → 즉시 반환
-2. Playwright MCP 서버 확인
-3. Playwright로 콘텐츠 추출 (메타데이터 + 본문 + 이미지)
-4. 로그인 wall 감지
-5. 탭 정리
-6. Wikilink 후보 파악 (vis search)
-7. 번역/요약 (shared-rules + article 구조, wikilink 포함)
-8. 이미지 다운로드
-9. 문서 저장 ($VAULT_ROOT/001-INBOX/)
-10. Related Notes 추가 (vis search)
-11. Atomic Note 후보 추가
-12. (백그라운드 모드 시) Progress 파일 업데이트
-13. 임시 파일 정리
+Remember to include all necessary subsections as described in the summary structure.
+```
