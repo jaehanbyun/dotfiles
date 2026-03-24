@@ -59,7 +59,16 @@
     "claude-hud@claude-hud": true,
     "clarify@team-attention-plugins": true,
     "agent-council@team-attention-plugins": true,
-    "code-review@claude-code-plugins": true
+    "code-review@claude-code-plugins": true,
+    "everything-claude-code@everything-claude-code": true
+  },
+  "extraKnownMarketplaces": {
+    "everything-claude-code": {
+      "source": {
+        "source": "github",
+        "repo": "affaan-m/everything-claude-code"
+      }
+    }
   },
   "language": "ko",
   "spinnerVerbs": {

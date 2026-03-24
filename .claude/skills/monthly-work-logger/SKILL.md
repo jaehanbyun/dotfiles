@@ -26,8 +26,8 @@ description: |
 
 | 항목 | 경로 |
 |------|------|
-| Weekly 소스 | `~/Documents/Obsidian Vault/work-log/weekly/` |
-| Monthly 출력 | `~/Documents/Obsidian Vault/work-log/monthly/` |
+| Weekly 소스 | `~/Documents/Obsidian Vault/notes/work-log/weekly/` |
+| Monthly 출력 | `~/Documents/Obsidian Vault/notes/work-log/monthly/` |
 | 파일명 형식 | `YYYY-MM.md` (예: `2026-03.md`) |
 
 ---
@@ -51,7 +51,7 @@ echo "대상 월: $TARGET_MONTH"
 
 ```bash
 VAULT_ROOT="$HOME/Documents/Obsidian Vault"
-WEEKLY_DIR="$VAULT_ROOT/work-log/weekly"
+WEEKLY_DIR="$VAULT_ROOT/notes/work-log/weekly"
 
 # 해당 월의 첫째 날과 마지막 날
 FIRST_DAY="${TARGET_MONTH}-01"
@@ -123,7 +123,7 @@ tags: [work-log, monthly]
 ### Phase 4: 파일 저장
 
 ```bash
-MONTHLY_FILE="$VAULT_ROOT/work-log/monthly/${TARGET_MONTH}.md"
+MONTHLY_FILE="$VAULT_ROOT/notes/work-log/monthly/${TARGET_MONTH}.md"
 ```
 
 Write 도구로 저장 후 완료 메시지:

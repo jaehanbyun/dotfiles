@@ -42,9 +42,9 @@ Main Agent (Orchestrator)
 | 항목 | 경로 |
 |------|------|
 | Vault Root | `~/Documents/Obsidian Vault/` |
-| Daily Work Log | `~/Documents/Obsidian Vault/work-log/daily/` |
-| Weekly Work Log | `~/Documents/Obsidian Vault/work-log/weekly/` |
-| Monthly Work Log | `~/Documents/Obsidian Vault/work-log/monthly/` |
+| Daily Work Log | `~/Documents/Obsidian Vault/notes/work-log/daily/` |
+| Weekly Work Log | `~/Documents/Obsidian Vault/notes/work-log/weekly/` |
+| Monthly Work Log | `~/Documents/Obsidian Vault/notes/work-log/monthly/` |
 | Claude 세션 | `~/.claude/history.jsonl` |
 
 ---
@@ -62,7 +62,7 @@ echo "대상 날짜: $TARGET_DATE"
 2. **Daily Work Log 경로 확인**
 ```bash
 VAULT_ROOT="$HOME/Documents/Obsidian Vault"
-DAILY_LOG="$VAULT_ROOT/work-log/daily/${TARGET_DATE}.md"
+DAILY_LOG="$VAULT_ROOT/notes/work-log/daily/${TARGET_DATE}.md"
 ```
 
 ---

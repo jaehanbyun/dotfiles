@@ -26,8 +26,8 @@ description: |
 
 | 항목 | 경로 |
 |------|------|
-| Daily 소스 | `~/Documents/Obsidian Vault/work-log/daily/` |
-| Weekly 출력 | `~/Documents/Obsidian Vault/work-log/weekly/` |
+| Daily 소스 | `~/Documents/Obsidian Vault/notes/work-log/daily/` |
+| Weekly 출력 | `~/Documents/Obsidian Vault/notes/work-log/weekly/` |
 | 파일명 형식 | `YYYY-Www.md` (예: `2026-W12.md`) |
 
 ---
@@ -60,7 +60,7 @@ echo "범위: $LAST_MON ~ $LAST_SUN (${YEAR}-W${WEEK_NUM})"
 
 ```bash
 VAULT_ROOT="$HOME/Documents/Obsidian Vault"
-DAILY_DIR="$VAULT_ROOT/work-log/daily"
+DAILY_DIR="$VAULT_ROOT/notes/work-log/daily"
 
 # 해당 주의 daily 파일 목록
 for i in $(seq 0 6); do
@@ -121,7 +121,7 @@ tags: [work-log, weekly]
 ### Phase 4: 파일 저장
 
 ```bash
-WEEKLY_FILE="$VAULT_ROOT/work-log/weekly/${YEAR}-W${WEEK_NUM}.md"
+WEEKLY_FILE="$VAULT_ROOT/notes/work-log/weekly/${YEAR}-W${WEEK_NUM}.md"
 ```
 
 Write 도구로 저장 후 완료 메시지:

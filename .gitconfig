@@ -131,8 +131,16 @@
   # Remember my merges
   # http://gitfu.wordpress.com/2008/04/20/git-rerere-rereremember-what-you-did-last-time/
   enabled = true
+# Default user (fallback)
 [include]
     path = ~/.gitconfig.user
+
+# Folder-based account switching
+[includeIf "gitdir:~/projects/supergate/"]
+    path = ~/.gitconfig-supergate
+
+[includeIf "gitdir:~/projects/personal/"]
+    path = ~/.gitconfig-personal
 [pull]
 	rebase = true
 [init]
