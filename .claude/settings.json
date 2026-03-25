@@ -37,7 +37,8 @@
     "deny": [
       "Bash(rm -rf /)"
     ],
-    "ask": []
+    "ask": [],
+    "defaultMode": "dontAsk"
   },
   "hooks": {
     "Stop": [
@@ -60,13 +61,21 @@
     "clarify@team-attention-plugins": true,
     "agent-council@team-attention-plugins": true,
     "code-review@claude-code-plugins": true,
-    "everything-claude-code@everything-claude-code": true
+    "everything-claude-code@everything-claude-code": true,
+    "frontend-design@claude-code-plugins": true,
+    "telegram@claude-plugins-official": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
       "source": {
         "source": "github",
         "repo": "affaan-m/everything-claude-code"
+      }
+    },
+    "claude-plugins-official": {
+      "source": {
+        "source": "github",
+        "repo": "anthropics/claude-plugins-official"
       }
     }
   },
@@ -97,6 +106,7 @@
     ]
   },
   "autoMemoryEnabled": true,
+  "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "mcpServers": {
     "playwright": {
@@ -104,6 +114,13 @@
       "args": [
         "@playwright/mcp@0.0.68"
       ]
+    },
+    "slurm": {
+      "command": "/Users/byeonjaehan/.local/bin/slurm-mcp",
+      "env": {
+        "SLURM_ENDPOINT": "http://localhost:16820",
+        "SLURM_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzQ1MTQxNjAsImlhdCI6MTc3NDQyNzc2MCwic3VuIjoicm9vdCJ9.ifwcDTBV0B6tih6AsE6N4f_hKHXEXWsBBJXAZu5Jjm8"
+      }
     }
   }
 }
