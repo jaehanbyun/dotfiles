@@ -77,6 +77,12 @@
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
       }
+    },
+    "supergate-claude-plugin": {
+      "source": {
+        "source": "github",
+        "repo": "supergate-hub/supergate-claude-plugin"
+      }
     }
   },
   "language": "ko",

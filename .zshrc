@@ -179,6 +179,15 @@ source "~/.rm-safely" >/dev/null 2>&1
 # Private environment variables
 [ -f ~/dotfiles-private/.env ] && source ~/dotfiles-private/.env
 
+# Arrow key history search (prefix-based)
+autoload -U up-line-or-beginning-search down-line-or-beginning-search
+zle -N up-line-or-beginning-search
+zle -N down-line-or-beginning-search
+bindkey "^[OA" up-line-or-beginning-search
+bindkey "^[OB" down-line-or-beginning-search
+bindkey "^[[A" up-line-or-beginning-search
+bindkey "^[[B" down-line-or-beginning-search
+
 # Shell GPT with Cerebras AI
 ai() {
   OPENAI_API_KEY="$CEREBRAS_API_KEY" sgpt -s "$*"

@@ -2,7 +2,7 @@
 
 > **Tag convention:** `<when-*>` = conditional trigger | other `<tags>` = always-on rules
 > **Section Priority:** Tags inherit their section's priority.
-> P0 (every interaction): Tool Preferences, Action Principles, Quality Control
+> P0 (every interaction): Tool Preferences, Action Principles, Request Enhancement, Quality Control
 > P1 (most interactions): Augmented Coding Principles, Context Health, Verification, Communication
 > P2 (when applicable): Long-running Tasks, Collaboration Patterns, Large-scale Changes, Learning, Diary
 
@@ -53,6 +53,51 @@ Do not jump into implementation unless clearly instructed. Default sequence: rea
 
 Exception: On explicit bug reports (error logs, failing tests, CI failures), proceed autonomously: investigate → fix → verify.
 </investigate_then_act>
+
+### Request Enhancement (Prompt Wrapping)
+
+Claude wraps and optimizes user requests so the user does not need to think about prompt engineering.
+
+<clarify_vague_requests>
+When a request is ambiguous or open to multiple interpretations, do not execute immediately. Ask targeted questions to pin down intent.
+
+- Missing "what", "in what format", or "under what constraints" AND the gap would meaningfully affect the result → clarify first
+- Clear requests, simple tasks, explicit bug fixes → execute immediately (no over-questioning)
+</clarify_vague_requests>
+
+<enrich_context>
+When a request lacks the "why" and knowing the motivation would materially improve the result → ask for background/purpose before proceeding.
+With context, Claude can generalize better and cover edge cases the user did not explicitly mention.
+
+Example: "make an analytics dashboard" → asking about audience, key metrics, and use case yields a far better result than guessing.
+Exception: Simple, self-contained instructions (e.g., "never use ellipses") → follow as-is.
+</enrich_context>
+
+<auto_tag_inputs>
+When the user provides multiple pieces of material (code, docs, data, examples, etc.) in a single request:
+
+1. Internally classify each piece by role: context / input / example / reference
+2. Determine relationships and processing priority among the pieces
+3. For long documents (20k+ tokens) → quote the relevant sections first, then work from those quotes
+
+The user never needs to use XML tags manually — Claude handles the structuring internally.
+</auto_tag_inputs>
+
+<leverage_examples>
+When the user provides examples:
+
+- Extract patterns (format, tone, structure) and apply them consistently to the output
+- If examples do not cover likely edge cases → ask "how should this case be handled?"
+- If no examples are given but format matters → show a sample output first and confirm direction
+</leverage_examples>
+
+<long_input_handling>
+When processing bulk input (multiple files, long documents):
+
+- Internally place long material at the top, instructions and queries at the bottom (optimal context layout)
+- When answering from multiple documents → quote relevant sections first, then respond grounded in those quotes
+- Filter noise aggressively to maintain accuracy on the core question
+</long_input_handling>
 
 ### Augmented Coding Principles
 
@@ -272,6 +317,69 @@ This section is the Single Source of Truth for paths.
 **Fallback:** Attempt LSP first → on error/timeout, report to user → Grep/Read only after user approval.
 </lsp_enforcement>
 </when-java-project>
+
+### Feature Development Harness
+
+<when-feature-development>
+**Activates when /feature-dev is invoked or user declares feature development mode.**
+
+**Workflow:**
+```
+Phase 0: Ideation (/office-hours, /clarify) → spec.md
+Phase 1: Planning (/autoplan or /plan-*-review) → plan.md + sprint contracts
+Phase 2: Implementation (harness loop) → code + handoffs + commits
+Phase 3: QA & Ship (/qa, /review, /ship) → PR + deploy
+```
+
+**Model Routing:**
+- Opus: Phase 0 (ideation), Phase 1 (planning/review) only
+- Sonnet: Phase 2 (generation, evaluation), Phase 3 (QA/ship)
+
+**Sprint Discipline:**
+- Written contract BEFORE coding starts — goal, success criteria, verification method, files to modify
+- Generator: subagent with isolated context, full tool access (Read, Write, Edit, Bash, Grep, Glob)
+- Evaluator: 3-layer architecture per sprint:
+  1. Programmatic: build → test → lint → typecheck (fast, free)
+  2. Agent evaluator: dedicated read-only agent, Anti-Leniency protocol, structured pass/fail
+  3. Visual evaluator (UI sprints only): /browse screenshot + design grading on 4 dimensions
+- On failure: structured error feedback to generator, retry up to max attempts, then escalate to user
+- Auto-commit after each passing sprint
+
+**Frontend Design (UI sprints):**
+- GAN-inspired iteration: generate → screenshot → grade (Design Quality / Originality / Craft / Functionality, 0-10) → feedback → regenerate
+- Max 5 iterations per UI sprint (convergence typically at 3-5)
+- Minimum passing score: 6/10 on each of the 4 dimensions
+- Avoid AI-generic aesthetics: no purple gradients, no Inter/Roboto fonts, no cookie-cutter layouts
+- Reference DESIGN.md tokens when available; run /design-consultation in Phase 1 if none exists
+
+**Retry Budget:**
+- Backend/logic sprints: max 3 retries
+- UI/frontend sprints: max 5 retries (design requires more iteration)
+- After max retries: escalate to user with full error context
+
+**Phase Gates (hard — no skipping):**
+
+| Transition | Requirement |
+|-----------|-------------|
+| Phase 0 → 1 | `spec.md` with problem statement + ≥2 success criteria |
+| Phase 1 → 2 | `plan.md` with sprint breakdown + ≥1 review pass OR user override |
+| Sprint N → N+1 | All 3 evaluation layers pass |
+| Phase 2 → 3 | All sprints complete in INDEX.md |
+| Phase 3 → Done | /review passes OR user ships |
+
+**State Location** — `.claude/plans/YYYY-MM-DD-feature-name/`:
+- `INDEX.md` — status, phase, resume point, project detection (build/test/lint commands)
+- `spec.md` — problem statement, success criteria, non-goals
+- `plan.md` — reviewed plan with sprint breakdown
+- `sprints/sprint-NN-contract.md` — what "done" looks like
+- `sprints/sprint-NN-handoff.md` — context for next sprint
+- `sprints/sprint-NN-eval.md` — evaluation results (all 3 layers)
+
+**Context Management:**
+- Handoff between sprints via structured markdown (completed work, test status, decisions, files)
+- Compress older handoffs: after sprint N+2, sprint N → 1-line summary
+- Only current contract + previous full handoff in active context
+</when-feature-development>
 
 ### Large-scale Changes
 
