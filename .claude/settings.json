@@ -27,28 +27,16 @@
       "Bash(which:*)",
       "Bash(pwd)",
       "Bash(ls:*)",
-      "mcp__playwright__browser_navigate",
-      "mcp__playwright__browser_close",
-      "mcp__playwright__browser_wait_for",
-      "mcp__playwright__browser_click",
-      "mcp__playwright__browser_snapshot",
       "mcp__pencil"
     ],
-    "deny": [
-      "Bash(rm -rf /)"
-    ],
+    "deny": ["Bash(rm -rf /)"],
     "ask": [],
     "defaultMode": "dontAsk"
   },
   "hooks": {
     "Stop": [
       {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "terminal-notifier -title \"Claude Code\" -message \"Claude 응답이 완료되었습니다\" -sound default -timeout 30"
-          }
-        ]
+        "hooks": []
       }
     ]
   },
@@ -115,12 +103,6 @@
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "mcpServers": {
-    "playwright": {
-      "url": "http://localhost:8931/mcp",
-      "args": [
-        "@playwright/mcp@0.0.68"
-      ]
-    },
     "slurm": {
       "command": "/Users/byeonjaehan/.local/bin/slurm-mcp",
       "env": {

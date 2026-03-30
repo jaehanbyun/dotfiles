@@ -28,7 +28,7 @@ description: |
 |------|------|
 | Daily 소스 | `~/Documents/Obsidian Vault/notes/work-log/daily/` |
 | Weekly 출력 | `~/Documents/Obsidian Vault/notes/work-log/weekly/` |
-| 파일명 형식 | `YYYY-Www.md` (예: `2026-W12.md`) |
+| 파일명 형식 | `YYYY-MM-Wn.md` (예: `2026-03-W4.md`) — 해당 월의 n번째 주 (월요일 기준) |
 
 ---
 
@@ -49,11 +49,18 @@ THIS_MON=$(date -j -f "%Y-%m-%d" -v-$((DOW-1))d "$BASE_DATE" +%Y-%m-%d)
 LAST_MON=$(date -j -f "%Y-%m-%d" -v-7d "$THIS_MON" +%Y-%m-%d)
 # 저번 주 일요일
 LAST_SUN=$(date -j -f "%Y-%m-%d" -v+6d "$LAST_MON" +%Y-%m-%d)
-# ISO 주 번호
-WEEK_NUM=$(date -j -f "%Y-%m-%d" "$LAST_MON" +%V)
+# 월-주차 계산 (해당 월의 n번째 주, 월요일 기준)
+MONTH=$(date -j -f "%Y-%m-%d" "$LAST_MON" +%m)
 YEAR=$(date -j -f "%Y-%m-%d" "$LAST_MON" +%Y)
+DAY_OF_MONTH=$(date -j -f "%Y-%m-%d" "$LAST_MON" +%d | sed 's/^0//')
+# 1일의 요일 (1=월~7=일)
+FIRST_DOW=$(date -j -f "%Y-%m-%d" "${YEAR}-${MONTH}-01" +%u)
+# 첫 번째 월요일 날짜
+if [ "$FIRST_DOW" -eq 1 ]; then FIRST_MON=1; else FIRST_MON=$((8 - FIRST_DOW + 1)); fi
+# n번째 주 계산
+WEEK_IN_MONTH=$(( (DAY_OF_MONTH - FIRST_MON) / 7 + 1 ))
 
-echo "범위: $LAST_MON ~ $LAST_SUN (${YEAR}-W${WEEK_NUM})"
+echo "범위: $LAST_MON ~ $LAST_SUN (${YEAR}-${MONTH}-W${WEEK_IN_MONTH})"
 ```
 
 ### Phase 2: Daily 문서 수집
@@ -78,54 +85,104 @@ done
 
 ```markdown
 ---
-date: {LAST_MON}
-end_date: {LAST_SUN}
-type: weekly
-week: {YEAR}-W{WEEK_NUM}
-tags: [work-log, weekly]
+id: {YEAR}-{MONTH}-W{WEEK_IN_MONTH}-summary
+aliases:
+  - {YEAR}년 {MONTH_KR}월 {WEEK_IN_MONTH}주차 업무 요약
+tags:
+  - work-log/weekly
+  - work-log/summary
+created_at: {TODAY}
+period: {LAST_MON} ~ {LAST_SUN}
+related: []
 ---
 
-# Weekly Work Log - {YEAR}-W{WEEK_NUM}
+# 주간 업무 요약 — {MONTH_KR}월 {WEEK_IN_MONTH}주차
 
-> {LAST_MON} (월) ~ {LAST_SUN} (일)
+> **기간**: {LAST_MON} (월) ~ {LAST_SUN} (일) | **분석된 Daily Notes**: {COUNT}/7일
 
-## 주간 요약
+---
 
-{전체 주의 핵심 성과를 3-5줄로 요약}
+## 주요 성과
 
-## 일별 작업 내역
+- **{성과 제목}** ({날짜}) — {1줄 설명}
+{3~5개 블릿, 날짜 포함, 가장 임팩트 있는 것 우선}
 
-### {월요일 날짜}
-{해당 daily에서 주요 내용 발췌/요약}
+---
 
-### {화요일 날짜}
-...
+## 프로젝트별 업무
 
-(daily 문서가 없는 날은 "작업 기록 없음" 표시)
+### {프로젝트명}
+- **완료**: {완료 항목들}
+- **진행 중**: {진행 중 항목들}
 
-## 주간 학습 기록
+{프로젝트 단위로 그룹핑, daily의 Claude Code 세션 기반}
 
-{모든 daily의 학습 기록을 통합하여 중복 제거 후 정리}
+---
 
-### 기술/도구
-- ...
+## 일별 요약
 
-### 해결방법
-- ...
+| 날짜 | 핵심 업무 |
+|------|----------|
+| {MM-DD (요일)} | {Vault N건, CC N세션 — 한 줄 요약} |
 
-## 다음 주 계획
+{Daily Note 없는 날은 "Daily Note 없음"}
 
-{이번 주 미완료 작업이나 다음 단계가 보이면 제안, 없으면 생략}
+---
+
+## 기술 & 학습
+
+### 주요 기술 학습
+
+| 기술/도구 | 내용 | 날짜 |
+|----------|------|------|
+| {기술명} | {한 줄 설명} | {M/D} |
+
+### 해결한 기술 문제
+
+- **{문제명}**: {해결 방법} ({날짜})
+
+### 사용 기술 스택
+
+- **백엔드**: ...
+- **프론트엔드**: ...
+- **인프라**: ...
+
+---
+
+## 이슈 & 다음 주 계획
+
+### 미완료 작업 (Carry-over)
+
+- [ ] {미완료 항목}
+
+### 이슈/블로커
+
+- **{이슈명}** — {설명}
+
+### 다음 주 제안 (Next Actions)
+
+**P1 (즉시 착수)**
+- [ ] {항목}
+
+**P2 (병렬 진행)**
+- [ ] {항목}
+
+---
+
+## Daily Notes
+
+- [[{YYYY-MM-DD}]]
+{해당 주의 daily note Obsidian 백링크}
 ```
 
 ### Phase 4: 파일 저장
 
 ```bash
-WEEKLY_FILE="$VAULT_ROOT/notes/work-log/weekly/${YEAR}-W${WEEK_NUM}.md"
+WEEKLY_FILE="$VAULT_ROOT/notes/work-log/weekly/${YEAR}-${MONTH}-W${WEEK_IN_MONTH}.md"
 ```
 
 Write 도구로 저장 후 완료 메시지:
-`{YEAR}-W{WEEK_NUM} ({LAST_MON} ~ {LAST_SUN}) 주간 work log가 생성되었습니다.`
+`{YEAR}-{MONTH}-W{WEEK_IN_MONTH} ({LAST_MON} ~ {LAST_SUN}) 주간 work log가 생성되었습니다.`
 
 ---
 
