@@ -29,7 +29,9 @@
       "Bash(ls:*)",
       "mcp__pencil"
     ],
-    "deny": ["Bash(rm -rf /)"],
+    "deny": [
+      "Bash(rm -rf /)"
+    ],
     "ask": [],
     "defaultMode": "dontAsk"
   },
@@ -51,7 +53,8 @@
     "code-review@claude-code-plugins": true,
     "everything-claude-code@everything-claude-code": true,
     "frontend-design@claude-code-plugins": true,
-    "telegram@claude-plugins-official": true
+    "telegram@claude-plugins-official": true,
+    "ui-ux-pro-max@ui-ux-pro-max-skill": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -70,6 +73,12 @@
       "source": {
         "source": "github",
         "repo": "supergate-hub/supergate-claude-plugin"
+      }
+    },
+    "ui-ux-pro-max-skill": {
+      "source": {
+        "source": "github",
+        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
       }
     }
   },
