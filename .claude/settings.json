@@ -49,12 +49,12 @@
   "enabledPlugins": {
     "claude-hud@claude-hud": true,
     "clarify@team-attention-plugins": true,
-    "agent-council@team-attention-plugins": true,
-    "code-review@claude-code-plugins": true,
+    "agent-council@team-attention-plugins": false,
+    "code-review@claude-code-plugins": false,
     "everything-claude-code@everything-claude-code": true,
-    "frontend-design@claude-code-plugins": true,
+    "frontend-design@claude-code-plugins": false,
     "telegram@claude-plugins-official": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": true
+    "ui-ux-pro-max@ui-ux-pro-max-skill": false
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -111,13 +111,5 @@
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "mcpServers": {
-    "slurm": {
-      "command": "/Users/byeonjaehan/.local/bin/slurm-mcp",
-      "env": {
-        "SLURM_ENDPOINT": "http://localhost:16820",
-        "SLURM_TOKEN": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3NzQ1MTQxNjAsImlhdCI6MTc3NDQyNzc2MCwic3VuIjoicm9vdCJ9.ifwcDTBV0B6tih6AsE6N4f_hKHXEXWsBBJXAZu5Jjm8"
-      }
-    }
-  }
+  "mcpServers": {}
 }
