@@ -192,3 +192,11 @@ bindkey "^[[B" down-line-or-beginning-search
 ai() {
   OPENAI_API_KEY="$CEREBRAS_API_KEY" sgpt -s "$*"
 }
+
+# Claude Code with MiniMax M2.7 (Anthropic Messages format compatible)
+# --bare: skips OAuth/keychain, uses only ANTHROPIC_API_KEY
+cld-minimax() {
+  ANTHROPIC_BASE_URL="https://api.minimax.io/anthropic" \
+  ANTHROPIC_API_KEY="$MINIMAX_API_KEY" \
+  claude --bare "$@"
+}
