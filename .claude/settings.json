@@ -9,12 +9,7 @@
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "API_TIMEOUT_MS": "3000000",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
-    "ANTHROPIC_MODEL": "claude-opus-4-6",
-    "ANTHROPIC_SMALL_FAST_MODEL": "claude-sonnet-4-6",
-    "ANTHROPIC_DEFAULT_OPUS_MODEL": "claude-opus-4-6",
-    "ANTHROPIC_DEFAULT_SONNET_MODEL": "claude-sonnet-4-6",
-    "ANTHROPIC_DEFAULT_HAIKU_MODEL": "claude-haiku-4-5"
+    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1"
   },
   "permissions": {
     "allow": [
@@ -34,15 +29,23 @@
       "Bash(which:*)",
       "Bash(pwd)",
       "Bash(ls:*)",
-      "mcp__pencil"
+      "mcp__pencil",
+      "Bash(jq:*)",
+      "Bash(test:*)",
+      "Bash(chmod:*)",
+      "Bash(git checkout:*)",
+      "Bash(git branch:*)",
+      "Bash(git ls-tree:*)",
+      "Bash(gh pr:*)",
+      "Bash(gh pr list:*)",
+      "Bash(sshpass -p 'super1gate@' ssh -o StrictHostKeyChecking=no jh.byun@192.168.35.8 \"echo '=== Current Ingress setup ===' && kubectl get ingressclass 2>/dev/null && echo && echo '=== Istio ingress ===' && kubectl get svc -n istio-system 2>/dev/null | head -5 && echo && echo '=== Helm repos ===' && helm repo list 2>/dev/null | head -10 && echo && echo '=== Available NodePorts ===' && kubectl get svc -A -o wide 2>/dev/null | grep -i nodeport | head -5\")"
     ],
     "deny": [
       "Bash(rm -rf /)"
     ],
     "ask": [],
-    "defaultMode": "dontAsk"
+    "defaultMode": "default"
   },
-  "model": "opus[1m]",
   "hooks": {
     "Stop": [
       {
@@ -131,9 +134,9 @@
       "연결고리 찾는 중"
     ]
   },
+  "effortLevel": "high",
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "mcpServers": {},
-  "effortLevel": "high"
+  "mcpServers": {}
 }
