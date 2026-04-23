@@ -441,3 +441,7 @@ EVERY session, you MUST append an entry to the monthly journal.
 - Sub-agents don't journal — only the main conversation writes
 - Use bash `>>` (append) for concurrency safety
   </diary>
+
+### browser-harness
+
+@~/Developer/browser-harness/SKILL.md
