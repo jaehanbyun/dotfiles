@@ -139,5 +139,10 @@
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "mcpServers": {}
+  "mcpServers": {},
+  "theme": "light",
+  "editorMode": "vim",
+  "verbose": true,
+  "teammateMode": "tmux",
+  "remoteControlAtStartup": true
 }

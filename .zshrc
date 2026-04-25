@@ -200,3 +200,4 @@ cld-minimax() {
   ANTHROPIC_API_KEY="$MINIMAX_API_KEY" \
   claude --bare "$@"
 }
+export PATH=$PATH:$HOME/.maestro/bin
