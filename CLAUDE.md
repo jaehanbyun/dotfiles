@@ -94,8 +94,21 @@ When making changes to configurations:
 - SketchyBar configuration is modular with separate plugin files for different system monitors
 - Some symlinks point to external directories (like `.hammerspoon` and other app-specific configs)
 
-## gstack
+## Web Browsing & Automation
 
-Use `/browse` from gstack for all web browsing. Never use `mcp__claude-in-chrome__*` or `mcp__playwright__*` tools.
+Pick the tool by goal.
 
-Available skills: `/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/review`, `/ship`, `/browse`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/retro`, `/investigate`, `/document-release`, `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`.
+| Goal | Recommended | Notes |
+|---|---|---|
+| General lookup / quick page check | `/browse` from gstack | First choice |
+| Interactive automation / site manipulation / iteration | `mcp__playwright__*` | **Use a separate Chrome instance (isolated from main session).** Headed mode preferred. |
+| Performance / console / network analysis | `mcp__chrome_devtools__*` | Debugging only |
+| Coordinate-click visual automation | `browser-harness` | Fastest iteration. Attaches to main Chrome — trusted environments only |
+| Claude in Chrome extension | `mcp__claude-in-chrome__*` | **Discouraged** — touches every tab/session/cookie of main Chrome. Use only when explicitly required |
+
+**Pre-flight checks before any automation:**
+- Inspect target site's `robots.txt` and ToS.
+- For gray-zone sites (e.g. `Disallow: /`), surface the status to the user and get explicit confirmation before proceeding.
+- One-shot small volume vs repeated/bulk: prefer official APIs for the latter.
+
+Available gstack skills: `/office-hours`, `/plan-ceo-review`, `/plan-eng-review`, `/plan-design-review`, `/design-consultation`, `/review`, `/ship`, `/browse`, `/qa`, `/qa-only`, `/design-review`, `/setup-browser-cookies`, `/retro`, `/investigate`, `/document-release`, `/codex`, `/careful`, `/freeze`, `/guard`, `/unfreeze`, `/gstack-upgrade`.
