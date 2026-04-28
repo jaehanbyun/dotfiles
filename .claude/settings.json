@@ -30,7 +30,6 @@
       "Bash(which:*)",
       "Bash(pwd)",
       "Bash(ls:*)",
-      "mcp__pencil",
       "Bash(jq:*)",
       "Bash(test:*)",
       "Bash(chmod:*)",
@@ -39,7 +38,8 @@
       "Bash(git ls-tree:*)",
       "Bash(gh pr:*)",
       "Bash(gh pr list:*)",
-      "Bash(sshpass -p 'super1gate@' ssh -o StrictHostKeyChecking=no jh.byun@192.168.35.8 \"echo '=== Current Ingress setup ===' && kubectl get ingressclass 2>/dev/null && echo && echo '=== Istio ingress ===' && kubectl get svc -n istio-system 2>/dev/null | head -5 && echo && echo '=== Helm repos ===' && helm repo list 2>/dev/null | head -10 && echo && echo '=== Available NodePorts ===' && kubectl get svc -A -o wide 2>/dev/null | grep -i nodeport | head -5\")"
+      "Bash(sshpass -p 'super1gate@' ssh -o StrictHostKeyChecking=no jh.byun@192.168.35.8 \"echo '=== Current Ingress setup ===' && kubectl get ingressclass 2>/dev/null && echo && echo '=== Istio ingress ===' && kubectl get svc -n istio-system 2>/dev/null | head -5 && echo && echo '=== Helm repos ===' && helm repo list 2>/dev/null | head -10 && echo && echo '=== Available NodePorts ===' && kubectl get svc -A -o wide 2>/dev/null | grep -i nodeport | head -5\")",
+      "mcp__pencil"
     ],
     "deny": [
       "Bash(rm -rf /)"
