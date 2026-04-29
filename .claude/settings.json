@@ -9,7 +9,6 @@
     "CLAUDE_CODE_DISABLE_TERMINAL_TITLE": "1",
     "CLAUDE_BASH_MAINTAIN_PROJECT_WORKING_DIR": "1",
     "API_TIMEOUT_MS": "3000000",
-    "CLAUDE_CODE_DISABLE_NONESSENTIAL_TRAFFIC": "1",
     "ECC_MCP_HEALTH_FAIL_OPEN": "1"
   },
   "permissions": {
@@ -51,6 +50,17 @@
     "Stop": [
       {
         "hooks": []
+      }
+    ],
+    "WorktreeCreate": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "$HOME/.claude/hooks/create-worktree.sh",
+            "timeout": 120
+          }
+        ]
       }
     ]
   },
@@ -139,10 +149,11 @@
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
-  "mcpServers": {},
   "theme": "light",
   "editorMode": "vim",
   "verbose": true,
   "teammateMode": "tmux",
-  "remoteControlAtStartup": true
+  "remoteControlAtStartup": true,
+  "mcpServers": {},
+  "agentPushNotifEnabled": true
 }
