@@ -201,3 +201,6 @@ cld-minimax() {
   claude --bare "$@"
 }
 export PATH=$PATH:$HOME/.maestro/bin
+
+# The next line updates PATH for Nebius CLI.
+if [ -f '/Users/byeonjaehan/.nebius/path.zsh.inc' ]; then source '/Users/byeonjaehan/.nebius/path.zsh.inc'; fi
