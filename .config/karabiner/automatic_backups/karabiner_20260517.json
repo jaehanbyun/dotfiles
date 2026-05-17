@@ -79,8 +79,8 @@
                             {
                                 "conditions": [
                                     {
-                                        "input_sources": [{ "language": "ko" }],
-                                        "type": "input_source_if"
+                                        "type": "input_source_if",
+                                        "input_sources": [{ "language": "ko" }]
                                     }
                                 ],
                                 "from": {
@@ -346,14 +346,6 @@
                         "product_id": 33366,
                         "vendor_id": 51984
                     }
-                },
-                {
-                    "identifiers": {
-                        "is_pointing_device": true,
-                        "product_id": 45108,
-                        "vendor_id": 1133
-                    },
-                    "ignore": false
                 }
             ],
             "name": "Default profile",
@@ -361,12 +353,7 @@
             "simple_modifications": [
                 {
                     "from": { "key_code": "caps_lock" },
-                    "to": [
-                        {
-                            "key_code": "left_control",
-                            "modifiers": ["left_shift", "left_command", "left_option"]
-                        }
-                    ]
+                    "to": [{ "key_code": "left_control", "modifiers": ["left_shift", "left_command", "left_option"] }]
                 }
             ],
             "virtual_hid_keyboard": { "keyboard_type_v2": "ansi" }
