@@ -139,6 +139,12 @@
 [includeIf "gitdir:~/projects/supergate/"]
     path = ~/.gitconfig-supergate
 
+[includeIf "gitdir:~/projects/launcher-dev/"]
+    path = ~/.gitconfig-supergate
+
+[includeIf "gitdir:~/projects/cluster-stack/"]
+    path = ~/.gitconfig-supergate
+
 [includeIf "gitdir:~/projects/personal/"]
     path = ~/.gitconfig-personal
 [pull]
@@ -163,11 +169,5 @@
 	smudge = git-lfs smudge -- %f
 [url "https://github.com/"]
 	insteadOf = git@github.com:
-[credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
-[credential "https://gist.github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
 [gitreview]
 	username = jaehanbyun
