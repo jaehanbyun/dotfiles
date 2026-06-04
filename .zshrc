@@ -206,3 +206,5 @@ export PATH=$PATH:$HOME/.maestro/bin
 if [ -f '/Users/byeonjaehan/.nebius/path.zsh.inc' ]; then source '/Users/byeonjaehan/.nebius/path.zsh.inc'; fi
 
 alias k='kubecolor'
+
+export PATH=/Users/byeonjaehan/.groundcover/bin:${PATH}
