@@ -208,3 +208,11 @@ if [ -f '/Users/byeonjaehan/.nebius/path.zsh.inc' ]; then source '/Users/byeonja
 alias k='kubecolor'
 
 export PATH=/Users/byeonjaehan/.groundcover/bin:${PATH}
+
+# Prefer Visual Studio Code for the `code` command.
+# /usr/local/bin/code currently points to Cursor.
+if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" ]]; then
+  code() {
+    "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" "$@"
+  }
+fi
