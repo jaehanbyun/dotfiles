@@ -216,3 +216,9 @@ if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" 
     "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" "$@"
   }
 fi
+
+
+[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
+
+
+[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
