@@ -218,7 +218,6 @@ if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" 
 fi
 
 
-[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
-
-
-[[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
+if [[ -z "$ZSH_EXECUTION_STRING" && -t 0 && -t 1 ]]; then
+  [[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
+fi
