@@ -176,9 +176,6 @@ source "~/.rm-safely" >/dev/null 2>&1
 # agf - AI Agent Session Finder (install: cargo install agf)
 # eval "$(agf init zsh)"
 
-# Private environment variables
-[ -f ~/dotfiles-private/.env ] && source ~/dotfiles-private/.env
-
 # Arrow key history search (prefix-based)
 autoload -U up-line-or-beginning-search down-line-or-beginning-search
 zle -N up-line-or-beginning-search
@@ -196,9 +193,19 @@ ai() {
 # Claude Code with MiniMax M2.7 (Anthropic Messages format compatible)
 # --bare: skips OAuth/keychain, uses only ANTHROPIC_API_KEY
 cld-minimax() {
+  local minimax_api_key
+  minimax_api_key="$(/usr/bin/security find-generic-password -a "$USER" -s "codex.minimax-api-key" -w 2>/dev/null)"
+  if [[ -z "$minimax_api_key" ]]; then
+    print -u2 "MiniMax API key not found in macOS Keychain."
+    return 1
+  fi
+
   ANTHROPIC_BASE_URL="https://api.minimax.io/anthropic" \
-  ANTHROPIC_API_KEY="$MINIMAX_API_KEY" \
+  ANTHROPIC_API_KEY="$minimax_api_key" \
   claude --bare "$@"
+  local status=$?
+  unset minimax_api_key
+  return $status
 }
 export PATH=$PATH:$HOME/.maestro/bin
 
