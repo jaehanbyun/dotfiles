@@ -1,6 +1,6 @@
 ---
 name: graphify
-description: "Use for any question about a codebase, its architecture, file relationships, or project content — especially when graphify-out/ exists, where the question should be treated as a graphify query first. Turns any input (code, docs, papers, images, videos) into a persistent knowledge graph with god nodes, community detection, and query/path/explain tools."
+description: "Build or query a persistent knowledge graph for explicit Graphify requests, an existing graphify-out/graph.json, or repository-wide multi-hop architecture and impact analysis spanning several modules. Do not use for routine codebase questions, symbol lookup, single-file work, ordinary debugging, or tasks that rg, an LSP, focused tests, or direct file inspection can answer more cheaply."
 ---
 
 # /graphify
@@ -51,6 +51,8 @@ Drop any folder of code, docs, papers, images, or video into graphify and get a 
 If the user invoked `/graphify --help` or `/graphify -h` (with no other arguments), print the contents of the `## Usage` section above verbatim and stop. Do not run any commands, do not detect files, do not default the path to `.`. Just print the Usage block and return.
 
 **Fast path — existing graph:** Before doing anything else, check whether `graphify-out/graph.json` exists. The expected location is `graphify-out/graph.json` relative to the **current working directory** (i.e. the project root where you are running commands). If it exists AND the user's request is a natural-language question about the codebase (e.g. "How does X work?", "What calls Y?", "Trace the data flow through Z") and NOT an explicit rebuild command (`--update`, `--cluster-only`, or a bare path/URL that implies fresh extraction): **skip Steps 1–5 entirely and jump straight to `## For /graphify query`.** Run `graphify query "<question>"` immediately. Do not run detect. Do not check corpus size. Do not ask the user to narrow. The graph is already built — use it.
+
+**Build gate — no existing graph:** If `graphify-out/graph.json` does not exist, run the full pipeline only when the user explicitly asks for Graphify, a knowledge graph, or a persistent repository-wide architecture map. For an implicitly matched codebase question, ordinary debugging, targeted impact check, symbol lookup, or work confined to a small number of files, stop using this skill and continue with `rg`, an LSP, focused tests, and direct file inspection. Do not build a graph merely because the request mentions architecture or asks how code works.
 
 If no path was given, use `.` (current directory). Do not ask the user for a path.
 
