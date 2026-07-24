@@ -80,7 +80,9 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
-plugins=(git zsh-autosuggestions zsh-syntax-highlighting web-search autojump)
+# zsh-autosuggestions is the active inline suggestion provider.
+# zsh-syntax-highlighting is also omitted to avoid ZLE redraw artifacts.
+plugins=(git zsh-autosuggestions web-search autojump)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -208,6 +210,5 @@ if [[ -x "/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code" 
 fi
 
 
-if [[ -z "$ZSH_EXECUTION_STRING" && -t 0 && -t 1 ]]; then
-  [[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
-fi
+# inshellisense disabled in favor of zsh-autosuggestions.
+# [[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh

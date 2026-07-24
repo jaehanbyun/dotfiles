@@ -163,10 +163,8 @@ setopt hist_verify
 bindkey "^[[A" history-search-backward
 bindkey "^[[B" history-search-forward
 
-# zsh-autosuggestions is loaded once through Oh My Zsh in ~/.zshrc.
-# Keep these manual sources disabled to avoid duplicate plugin initialization.
-# source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
-# source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+source /opt/homebrew/share/zsh-autosuggestions/zsh-autosuggestions.zsh
+source $(brew --prefix)/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # alias ls="eza --color=always --long --no-filesize --icons=always --no-time --no-user --no-permissions"
 #alias ls="eza --color=always --long --icons=always --no-user --no-permissions"

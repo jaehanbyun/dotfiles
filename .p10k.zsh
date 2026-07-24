@@ -35,8 +35,8 @@
     # os_icon               # os identifier
     dir                     # current directory
     vcs                     # git status
-    # =========================[ Line #2 ]=========================
-    newline                 # \n
+    # Keep the editable prompt on one line for inshellisense's terminal renderer.
+    # newline               # \n
     prompt_char             # prompt symbol
   )
 
