@@ -1,7 +1,7 @@
 ---
 name: monthly-work-logger
 description: |
-  실행 기준 저번 달의 weekly work log를 종합해 월간 업무 요약을 work-log/monthly/에 저장.
+  실행 기준 저번 달의 weekly work log를 종합해 월간 업무 요약을 work-logs Vault의 monthly/에 저장.
   "월간 정리", "monthly log", "지난달 정리", "/monthly-work-logger" 요청 시 사용.
 argument-hint: "[YYYY-MM]"
 user_invocable: true
@@ -26,7 +26,7 @@ python3 ~/.codex/skills/work-log-wrap-up/scripts/collect_work_log_context.py mon
 출력 경로:
 
 ```text
-$VAULT_ROOT/notes/work-log/monthly/{YYYY-MM}.md
+$WORK_LOG_VAULT_ROOT/monthly/{YYYY-MM}.md
 ```
 
 ## 출력 포맷

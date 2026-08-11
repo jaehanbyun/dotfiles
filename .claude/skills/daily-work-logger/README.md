@@ -27,7 +27,7 @@
 
 | 도구/서비스 | 용도 | 비고 |
 |------------|------|------|
-| Obsidian Vault | work log 저장소 | `$VAULT_ROOT`가 없으면 `~/Documents/Obsidian Vault` 사용 |
+| Obsidian Vault | 원본 문서 수집 및 work log 저장소 | 원본은 `$VAULT_ROOT`, 출력은 `$WORK_LOG_VAULT_ROOT` 사용 |
 | Codex session files | Codex 작업 내역 수집 | 없으면 해당 섹션 건너뜀 |
 | Reminders.app | 오늘 할 일 생성 | macOS 기본 앱, 리스트 없으면 자동 생성 |
 | Python 3 | 수집/생성 스크립트 실행 | macOS 기본 제공 |
@@ -37,7 +37,7 @@
 ```text
 daily-work-logger
   -> work-log-wrap-up/scripts/collect_work_log_context.py
-  -> Obsidian work-log/daily/YYYY-MM-DD.md 생성 또는 갱신
+  -> work-logs Vault의 daily/YYYY-MM-DD.md 생성 또는 갱신
   -> work-log-wrap-up/scripts/apple_reminders.py
   -> Reminders.app Daily Focus 리스트에 오늘 할 일 생성
 ```
@@ -45,7 +45,7 @@ daily-work-logger
 출력 경로:
 
 ```text
-$VAULT_ROOT/notes/work-log/daily/YYYY-MM-DD.md
+$WORK_LOG_VAULT_ROOT/daily/YYYY-MM-DD.md
 ```
 
 관련 공통 스킬과 스크립트는 `~/.codex/skills/work-log-wrap-up/`에 있습니다.

@@ -1,7 +1,7 @@
 ---
 name: daily-work-logger
 description: |
-  매일 아침 업무 시작 전 어제 작업 내역을 Codex 세션, Obsidian 문서, 미팅 노트에서 수집해 work-log/daily/에 반영하고, 오늘 할 일 후보를 Apple Reminders에 생성할 때 사용.
+  매일 아침 업무 시작 전 어제 작업 내역을 Codex 세션, Obsidian 문서, 미팅 노트에서 수집해 work-logs Vault의 daily/에 반영하고, 오늘 할 일 후보를 Apple Reminders에 생성할 때 사용.
   "어제 작업 정리해줘", "daily log", "업무 내역 정리", "/daily-work-logger" 요청 시 사용.
 argument-hint: "[YYYY-MM-DD]"
 user_invocable: true
@@ -29,10 +29,10 @@ python3 ~/.codex/skills/work-log-wrap-up/scripts/collect_work_log_context.py dai
 출력 경로:
 
 ```text
-$VAULT_ROOT/notes/work-log/daily/{TARGET_DATE}.md
+$WORK_LOG_VAULT_ROOT/daily/{TARGET_DATE}.md
 ```
 
-`$VAULT_ROOT`가 없으면 `~/Documents/Obsidian Vault`를 사용한다.
+`$WORK_LOG_VAULT_ROOT`가 없으면 `~/Documents/work-logs`를 사용한다. 원본 Obsidian 문서와 미팅 노트 수집에는 `$VAULT_ROOT`를 사용하며, 기본값은 `~/Documents/Obsidian Vault`다.
 
 ## 출력 포맷
 

@@ -1,7 +1,7 @@
 ---
 name: weekly-work-logger
 description: |
-  실행 기준 저번 주(월~일)의 daily work log를 종합해 주간 업무 요약을 work-log/weekly/에 저장.
+  실행 기준 저번 주(월~일)의 daily work log를 종합해 주간 업무 요약을 work-logs Vault의 weekly/에 저장.
   "주간 정리", "weekly log", "이번 주 정리", "/weekly-work-logger" 요청 시 사용.
 argument-hint: "[base YYYY-MM-DD]"
 user_invocable: true
@@ -26,7 +26,7 @@ python3 ~/.codex/skills/work-log-wrap-up/scripts/collect_work_log_context.py wee
 출력 경로:
 
 ```text
-$VAULT_ROOT/notes/work-log/weekly/{YEAR}-{MONTH}-W{WEEK_IN_MONTH}.md
+$WORK_LOG_VAULT_ROOT/weekly/{YEAR}-{MONTH}-W{WEEK_IN_MONTH}.md
 ```
 
 ## 출력 포맷
