@@ -212,3 +212,6 @@ fi
 
 # inshellisense disabled in favor of zsh-autosuggestions.
 # [[ -f ~/.inshellisense/init/zsh/init.zsh ]] && source ~/.inshellisense/init/zsh/init.zsh
+
+# Unity CLI
+. "/Users/byeonjaehan/.unity/env"
