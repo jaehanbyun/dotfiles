@@ -233,6 +233,12 @@
   "verbose": true,
   "teammateMode": "tmux",
   "remoteControlAtStartup": true,
+  "agentPushNotifEnabled": true,
   "mcpServers": {},
-  "agentPushNotifEnabled": true
+  "tui": "fullscreen",
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  }
 }
