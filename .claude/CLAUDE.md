@@ -30,7 +30,7 @@
 
 - Prefer `rg` for text search, `fd` for file discovery, and `sg` or an LSP when structural or symbol-aware search provides a clear benefit.
 - If an LSP is unavailable or fails, fall back to `rg` and direct inspection without blocking for approval.
-- Use browser automation for dynamic, authenticated, or interaction-heavy pages. Use WebFetch, API clients, or `curl` when they are the simpler appropriate tool.
+- Use Aside for browser work, per `~/.claude/rules/browser.md`. Use WebFetch, API clients, or `curl` when they are the simpler appropriate tool.
 - Avoid dumping large outputs into the conversation. Narrow searches, read relevant ranges, and summarize material findings.
 - Combine independent read-only checks when doing so reduces latency without obscuring results.
 
@@ -49,7 +49,10 @@
 - For `/Users/byeonjaehan/projects/personal/`, `jaehanbyun`-owned origins, or git users `jaehanbyun` and `jhbyun`, use `jaehanbyun`.
 - For `/Users/byeonjaehan/projects/supergate/`, `/Users/byeonjaehan/projects/launcher-dev/`, and `/Users/byeonjaehan/projects/cluster-stack/`, use `supergate-jhbyun`.
 - After switching with `gh auth switch -h github.com -u <account>`, verify the account again.
+- In `supergate-hub` repositories, commit only as the organization identity. Never pass `-c user.name` or `-c user.email`; `~/.gitconfig` selects the identity by remote owner, so verify with `git var GIT_AUTHOR_IDENT` and fix the configuration rather than overriding it. The personal address `awbrg789@naver.com` belongs to `jaehanbyun` and must never author a `supergate-hub` commit.
+- Never write a `Co-authored-by` trailer in a `supergate-hub` commit. A squash merge converts a pull request commit author into that trailer on `main`, so a single wrongly authored commit credits the wrong GitHub account permanently and cannot be corrected without rewriting history.
 - For repository-scoped issue or PR drafts and writes, inspect the repository templates and related `config.yml`; match their fields and check for related issues.
+- Write PR titles and descriptions per `~/.claude/rules/pr-description.md`: one covering title, a short Summary with a compact table instead of a diff enumeration, and Reviewer Focus limited to contestable decisions.
 
 ## Communication
 
@@ -61,6 +64,6 @@
 ## Conditional workflows
 
 - Use Graphify only when the user explicitly requests Graphify, a knowledge graph, or persistent graph operations. Then read `~/.agents/skills/graphify/SKILL.md`; do not load it for routine code exploration.
-- For an explicit browser-harness request, read `~/Developer/browser-harness/SKILL.md` before acting; do not import it into every session.
+- Browser automation defaults to Aside. Use `browser-harness`, Playwright, or Chrome DevTools MCP only on an explicit request for that tool; for browser-harness, read `~/Developer/browser-harness/SKILL.md` before acting and do not import it into every session.
 - Use the installed Obsidian skills for Obsidian work instead of hardcoding a vault workflow globally.
 - Keep Java-specific LSP rules, feature-development harnesses, deployment procedures, and other specialized workflows in project-local instructions or dedicated skills.

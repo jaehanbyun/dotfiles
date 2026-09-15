@@ -147,6 +147,7 @@
 
 [includeIf "gitdir:~/projects/personal/"]
     path = ~/.gitconfig-personal
+
 [pull]
 	rebase = true
 [init]
@@ -177,3 +178,16 @@
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
+
+# Identity by remote owner, not by location. Worktrees and agent workspaces live in /tmp and
+# ~/conductor, where the gitdir rules above do not reach, and they used to fall back to the
+# personal identity in ~/.gitconfig.user. Any checkout whose remote points at the Supergate
+# organization uses the Supergate identity wherever it sits on disk.
+[includeIf "hasconfig:remote.*.url:https://github.com/supergate-hub/**"]
+    path = ~/.gitconfig-supergate
+[includeIf "hasconfig:remote.*.url:https://github.com/supergate-hub/**.git"]
+    path = ~/.gitconfig-supergate
+[includeIf "hasconfig:remote.*.url:git@github.com:supergate-hub/**"]
+    path = ~/.gitconfig-supergate
+[includeIf "hasconfig:remote.*.url:ssh://git@github.com/supergate-hub/**"]
+    path = ~/.gitconfig-supergate

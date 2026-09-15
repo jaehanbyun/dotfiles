@@ -96,15 +96,19 @@ When making changes to configurations:
 
 ## Web Browsing & Automation
 
-Pick the tool by goal.
+**Aside is the default browser tool.** See `~/.claude/rules/browser.md` for the global
+rule. Invoke the `aside-browser` skill and run `aside guide` before the first browser
+action.
 
 | Goal | Recommended | Notes |
 |---|---|---|
-| General lookup / quick page check | `/browse` from gstack | First choice |
-| Interactive automation / site manipulation / iteration | `mcp__playwright__*` | **Use a separate Chrome instance (isolated from main session).** Headed mode preferred. |
-| Performance / console / network analysis | `mcp__chrome_devtools__*` | Debugging only |
-| Coordinate-click visual automation | `browser-harness` | Fastest iteration. Attaches to main Chrome — trusted environments only |
-| Claude in Chrome extension | `mcp__claude-in-chrome__*` | **Discouraged** — touches every tab/session/cookie of main Chrome. Use only when explicitly required |
+| Any browser work (inspect, click, fill, screenshot, authenticated sites) | `aside-browser` | Default. Run `aside guide` first |
+| Static page / docs lookup | `WebFetch`, or `ctx7` for library docs | No browser needed |
+| HTTP status, headers, server-rendered HTML | `curl` | No browser needed |
+| Performance / console / network analysis | `mcp__chrome_devtools__*` | Only on explicit request |
+| Coordinate-click visual automation | `browser-harness` | Only on explicit request. Attaches to main Chrome — trusted environments only |
+| Playwright MCP | `mcp__playwright__*` | Only on explicit request. Use a separate Chrome instance |
+| Claude in Chrome extension | `mcp__claude-in-chrome__*` | **Discouraged** — touches every tab/session/cookie of main Chrome |
 
 **Pre-flight checks before any automation:**
 - Inspect target site's `robots.txt` and ToS.
