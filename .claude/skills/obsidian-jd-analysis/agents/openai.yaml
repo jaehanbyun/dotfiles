@@ -1,0 +1,4 @@
+interface:
+  display_name: "Obsidian JD Analysis"
+  short_description: "Wanted 등 채용공고를 원문과 아키텍처 근거까지 보존해 분석 노트로 정리합니다."
+  default_prompt: "Use $obsidian-jd-analysis to 채용공고를 main vault의 jd-analysis에 원문 토글과 근거 기반 아키텍처 이미지까지 포함해 정리해 주세요."

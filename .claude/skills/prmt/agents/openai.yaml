@@ -1,0 +1,4 @@
+interface:
+  display_name: "Prmt"
+  short_description: "Turn rough requests into strong prompts"
+  default_prompt: "Use $prmt to turn my rough request into a prompt Codex can answer well."

@@ -1,0 +1,6 @@
+interface:
+  display_name: "Next Workspace Start"
+  short_description: "Start next workspace work"
+  default_prompt: "Use $next-workspace-start to inspect this Conductor workspace, choose the next task or current PR work, implement it, verify it, and report the outcome."
+policy:
+  allow_implicit_invocation: true

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Session Recap"
+  short_description: "현재 세션의 핵심 상태와 다음 행동을 한국어로 요약"
+  default_prompt: "Use $recap to summarize this session for re-entry."

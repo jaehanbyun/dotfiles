@@ -148,16 +148,10 @@
     "command": "bash -c '\"/opt/homebrew/bin/node\" \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)dist/index.js\"'"
   },
   "enabledPlugins": {
-    "claude-hud@claude-hud": true,
     "clarify@team-attention-plugins": true,
-    "agent-council@team-attention-plugins": false,
-    "code-review@claude-code-plugins": false,
-    "everything-claude-code@everything-claude-code": true,
     "frontend-design@claude-code-plugins": false,
     "telegram@claude-plugins-official": true,
-    "ui-ux-pro-max@ui-ux-pro-max-skill": false,
     "agent-skills@addy-agent-skills": true,
-    "plannotator@plannotator": true,
     "obsidian@supergate-claude-plugin": true
   },
   "extraKnownMarketplaces": {

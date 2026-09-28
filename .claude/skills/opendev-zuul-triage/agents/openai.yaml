@@ -1,0 +1,4 @@
+interface:
+  display_name: "OpenDev Zuul Triage"
+  short_description: "Triage Gerrit and Zuul CI failures"
+  default_prompt: "Analyze an OpenDev Gerrit change or Zuul build failure, identify the likely cause, and recommend the next safe action with exact links and evidence."

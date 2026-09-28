@@ -1,0 +1,4 @@
+interface:
+  display_name: "K8s Cluster Access Bootstrap"
+  short_description: "Bootstrap kubeconfig and storage checks"
+  default_prompt: "Bootstrap or repair Kubernetes cluster access, merge kubeconfig safely, validate connectivity, and optionally compare or install storage provisioners with cleanup."

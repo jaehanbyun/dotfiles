@@ -1,0 +1,4 @@
+interface:
+  display_name: "Meeting Doc"
+  short_description: "Create concise Confluence meeting docs"
+  default_prompt: "Use $meeting-doc to create a concise meeting document for the next Monday or Thursday meeting."

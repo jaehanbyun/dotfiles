@@ -1,0 +1,4 @@
+interface:
+  display_name: "캐릭터 쇼츠 제작"
+  short_description: "캐릭터 이미지 3종부터 Hailuo 영상 생성·캡컷 편집까지"
+  default_prompt: "$hailuo-character-shorts로 캐릭터 이미지 3종과 타임랩스·패션 영상을 만들고 캡컷에서 연결해 내보내줘."
