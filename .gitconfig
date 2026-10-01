@@ -135,6 +135,10 @@
 [include]
     path = ~/.gitconfig.user
 
+[credential "https://github.com"]
+	helper = 
+	helper = !/opt/homebrew/bin/gh auth git-credential
+
 # Folder-based account switching
 [includeIf "gitdir:~/projects/supergate/"]
     path = ~/.gitconfig-supergate
@@ -172,9 +176,6 @@
 	insteadOf = git@github.com:
 [gitreview]
 	username = jaehanbyun
-[credential "https://github.com"]
-	helper = 
-	helper = !/opt/homebrew/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper = 
 	helper = !/opt/homebrew/bin/gh auth git-credential
