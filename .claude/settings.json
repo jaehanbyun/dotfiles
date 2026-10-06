@@ -11,6 +11,11 @@
     "API_TIMEOUT_MS": "3000000",
     "ECC_MCP_HEALTH_FAIL_OPEN": "1"
   },
+  "attribution": {
+    "commit": "",
+    "pr": "",
+    "sessionUrl": false
+  },
   "permissions": {
     "allow": [
       "Bash(npm run lint)",
@@ -152,7 +157,8 @@
     "frontend-design@claude-code-plugins": false,
     "telegram@claude-plugins-official": true,
     "agent-skills@addy-agent-skills": true,
-    "obsidian@supergate-claude-plugin": true
+    "obsidian@supergate-claude-plugin": true,
+    "whiteboard@devfast": true
   },
   "extraKnownMarketplaces": {
     "everything-claude-code": {
@@ -190,6 +196,12 @@
         "source": "github",
         "repo": "backnotprop/plannotator"
       }
+    },
+    "devfast": {
+      "source": {
+        "source": "github",
+        "repo": "devdotfast/whiteboard"
+      }
     }
   },
   "language": "ko",
@@ -219,20 +231,16 @@
     ]
   },
   "effortLevel": "xhigh",
+  "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
   "theme": "light",
   "editorMode": "vim",
   "verbose": true,
+  "switchModelsOnFlag": false,
   "teammateMode": "tmux",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "mcpServers": {},
-  "tui": "fullscreen",
-  "attribution": {
-    "commit": "",
-    "pr": "",
-    "sessionUrl": false
-  }
+  "mcpServers": {}
 }
