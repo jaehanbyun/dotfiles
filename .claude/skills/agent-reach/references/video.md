@@ -39,44 +39,70 @@ yt-dlp --dump-json "ytsearch5:query"
 > **字幕注意**: 手动上传的字幕提取可靠；自动生成字幕可能存在行间重复，需后处理。
 > **评论注意**: `--write-comments` 基于网页抓取（非 YouTube Data API），部分评论可能丢失。
 
-## B站 / Bilibili (yt-dlp + bili-cli)
-
-### 视频元数据 (yt-dlp)
+### 无字幕兜底：Whisper 音频转写
 
 ```bash
-yt-dlp --dump-json "https://www.bilibili.com/video/BVxxx"
+# 视频没有字幕时的兜底：下载音频并用 Whisper 转写（Groq 免费 key 即可）
+agent-reach transcribe "https://www.youtube.com/watch?v=VIDEO_ID"
+agent-reach transcribe ./local_audio.mp3 -o /tmp/transcript.txt
 ```
 
-### 字幕 (yt-dlp)
+> 需要先配置 key：`agent-reach configure groq-key gsk_xxx`（免费，console.groq.com）
+> 或 `agent-reach configure openai-key sk-xxx`。默认 auto 模式：groq 失败自动降级 openai。
+
+## B站 / Bilibili（bili-cli 为主，OpenCLI 补字幕）
+
+> ⚠️ **不要用 yt-dlp 读 B站**：B站风控已全面 412 拦截 yt-dlp（实测最新版、直连/代理/带 Cookie 全部无效）。yt-dlp 只用于 YouTube。
+
+### 视频详情/搜索/热门/排行 (bili-cli，只读无需登录)
 
 ```bash
-yt-dlp --write-sub --write-auto-sub --sub-lang "zh-Hans,zh,en" --convert-subs vtt --skip-download -o "/tmp/%(id)s" "URL"
-```
+# 视频详情（标题/UP主/时长/播放互动数据/字幕可用性）
+bili video BVxxx
 
-### 搜索/热门/排行 (bili-cli)
-
-```bash
 # 搜索视频
 bili search "query" --type video -n 5
 
-# 热门视频
+# 热门视频 / 排行榜
 bili hot -n 10
-
-# 排行榜
 bili rank -n 10
+
+# 下载音频并切分为 ASR-ready WAV（无字幕时配合 agent-reach transcribe 转写）
+bili audio BVxxx
 ```
 
-> **412 风控**: 海外 IP 必须提供 Cookie（`--cookies-from-browser chrome` 或 `--cookies /path/to/cookies.txt`），国内 IP 一般不受影响。
-> **安装 bili-cli**: `pipx install bilibili-cli`，然后 `bili login` 扫码登录。
+### 字幕 (OpenCLI，需要桌面 Chrome)
+
+```bash
+# 字幕逐句带时间轴
+opencli bilibili subtitle BVxxx
+
+# OpenCLI 也能搜索/读视频元数据（备选）
+opencli bilibili search "query" -f yaml
+opencli bilibili video BVxxx -f yaml
+```
+
+### 零配置兜底：搜索 API 直连
+
+```bash
+UA="Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36"
+curl -s -c /tmp/bili_ck.txt -o /dev/null -A "$UA" "https://www.bilibili.com/"
+curl -s -b /tmp/bili_ck.txt -A "$UA" -e "https://www.bilibili.com/" \
+  "https://api.bilibili.com/x/web-interface/search/all/v2?keyword=QUERY&page=1"
+```
+
+> **安装 bili-cli**: `pipx install bilibili-cli`（上游 2026-03 起停更但实测健康；只读场景无需登录，`bili login` 扫码可解锁动态/收藏等个人功能）。
 
 ## 小宇宙播客 / Xiaoyuzhou Podcast
 
-### 转录单集播客
+### 转录单集播客（可选 --polish 增强标点）
 
 ```bash
-# 输出 Markdown 文件到 /tmp/
-~/.agent-reach/tools/xiaoyuzhou/transcribe.sh "https://www.xiaoyuzhoufm.com/episode/EPISODE_ID"
+# 输出 Markdown 文件到 /tmp/。--polish 让 Llama 3.3 70B 给文稿补中文标点+合理分段
+~/.agent-reach/tools/xiaoyuzhou/transcribe.sh --polish "https://www.xiaoyuzhoufm.com/episode/EPISODE_ID"
 ```
+
+> 转写 prompt 已要求 Whisper 输出中文标点；若标点效果仍不理想，可加 `--polish` 用 Groq 上免费的 Llama 3.3 70B 补标点+合理分段（9 分钟播客约多 ~7 秒）。每次转写多一轮 LLM 调用，按需使用。
 
 ### 前置要求
 
@@ -93,23 +119,12 @@ agent-reach doctor
 
 > 输出 Markdown 文件默认保存到 `/tmp/`。
 
-## 抖音视频解析
-
-```bash
-# 解析视频信息
-mcporter call 'douyin.parse_douyin_video_info(share_link: "https://v.douyin.com/xxx/")'
-
-# 获取无水印下载链接
-mcporter call 'douyin.get_douyin_download_link(share_link: "https://v.douyin.com/xxx/")'
-```
-
-> 详见 [social.md](social.md#抖音--douyin)
-
 ## 选择指南
 
 | 场景 | 推荐工具 |
 |-----|---------|
 | YouTube 字幕 | yt-dlp |
-| B站字幕 | yt-dlp |
+| B站视频详情/搜索 | bili-cli |
+| B站字幕 | opencli bilibili subtitle |
 | 播客转录 | 小宇宙 transcribe.sh |
-| 抖音视频解析 | douyin MCP |
+| 无字幕音视频 | agent-reach transcribe（B站音频先 `bili audio`） |
