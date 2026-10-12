@@ -164,48 +164,14 @@
     "command": "bash -c '\"/opt/homebrew/bin/node\" \"$(ls -td ~/.claude/plugins/cache/claude-hud/claude-hud/*/ 2>/dev/null | head -1)dist/index.js\"'"
   },
   "enabledPlugins": {
-    "clarify@team-attention-plugins": true,
-    "frontend-design@claude-code-plugins": false,
     "telegram@claude-plugins-official": true,
-    "agent-skills@addy-agent-skills": true,
-    "obsidian@supergate-claude-plugin": true,
     "whiteboard@devfast": true
   },
   "extraKnownMarketplaces": {
-    "everything-claude-code": {
-      "source": {
-        "source": "github",
-        "repo": "affaan-m/everything-claude-code"
-      }
-    },
     "claude-plugins-official": {
       "source": {
         "source": "github",
         "repo": "anthropics/claude-plugins-official"
-      }
-    },
-    "supergate-claude-plugin": {
-      "source": {
-        "source": "github",
-        "repo": "supergate-hub/supergate-claude-plugin"
-      }
-    },
-    "ui-ux-pro-max-skill": {
-      "source": {
-        "source": "github",
-        "repo": "nextlevelbuilder/ui-ux-pro-max-skill"
-      }
-    },
-    "addy-agent-skills": {
-      "source": {
-        "source": "github",
-        "repo": "addyosmani/agent-skills"
-      }
-    },
-    "plannotator": {
-      "source": {
-        "source": "github",
-        "repo": "backnotprop/plannotator"
       }
     },
     "devfast": {
