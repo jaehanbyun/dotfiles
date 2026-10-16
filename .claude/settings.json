@@ -219,5 +219,6 @@
   "teammateMode": "tmux",
   "remoteControlAtStartup": true,
   "agentPushNotifEnabled": true,
-  "mcpServers": {}
+  "mcpServers": {},
+  "skipWorkflowUsageWarning": true
 }

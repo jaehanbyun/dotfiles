@@ -1,5 +1,5 @@
 {
-  "lastUpdated": 1792020737595,
+  "lastUpdated": 1792110945621,
   "skills": [
     {
       "skillId": "docs",
@@ -34,7 +34,7 @@
       "name": "mcp-builder",
       "description": "Guide for creating high-quality MCP (Model Context Protocol) servers that enable LLMs to interact with external services through well-designed tools. Use when building MCP servers to integrate external APIs or services, whether in Python (FastMCP) or Node/TypeScript (MCP SDK).",
       "source": "anthropic-example",
-      "updatedAt": "2026-09-14T19:41:01.618801Z"
+      "updatedAt": "2026-10-15T23:01:24.119783Z"
     },
     {
       "skillId": "pdf",
