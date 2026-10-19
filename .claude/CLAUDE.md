@@ -52,7 +52,7 @@
 - In `supergate-hub` repositories, commit only as the organization identity. Never pass `-c user.name` or `-c user.email`; `~/.gitconfig` selects the identity by remote owner, so verify with `git var GIT_AUTHOR_IDENT` and fix the configuration rather than overriding it. The personal address `awbrg789@naver.com` belongs to `jaehanbyun` and must never author a `supergate-hub` commit.
 - Never write a `Co-authored-by` trailer in a `supergate-hub` commit. A squash merge converts a pull request commit author into that trailer on `main`, so a single wrongly authored commit credits the wrong GitHub account permanently and cannot be corrected without rewriting history.
 - For repository-scoped issue or PR drafts and writes, inspect the repository templates and related `config.yml`; match their fields and check for related issues.
-- Write PR titles and descriptions per `~/.claude/rules/pr-description.md`: one covering title, a short Summary with a compact table instead of a diff enumeration, and Reviewer Focus limited to contestable decisions.
+- Write PR titles and descriptions per `~/.claude/rules/pr-description.md`: one covering title and a short What? / Why? / How? body that ends with one line naming the checks that ran.
 
 ## Communication
 
