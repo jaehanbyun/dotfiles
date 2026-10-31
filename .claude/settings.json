@@ -207,7 +207,7 @@
       "연결고리 찾는 중"
     ]
   },
-  "effortLevel": "xhigh",
+  "effortLevel": "medium",
   "tui": "fullscreen",
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
