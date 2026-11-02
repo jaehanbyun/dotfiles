@@ -56,11 +56,9 @@
       "Bash(agent-reach doctor:*)",
       "mcp__pencil"
     ],
-    "deny": [
-      "Bash(rm -rf /)"
-    ],
+    "deny": ["Bash(rm -rf /)"],
     "ask": [],
-    "defaultMode": "default"
+    "defaultMode": "auto"
   },
   "hooks": {
     "Stop": [
