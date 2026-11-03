@@ -157,10 +157,6 @@
       }
     ]
   },
-  "statusLine": {
-    "type": "command",
-    "command": "bash ~/.claude/statusline.sh"
-  },
   "enabledPlugins": {
     "telegram@claude-plugins-official": true,
     "whiteboard@devfast": true
@@ -210,6 +206,10 @@
   "autoMemoryEnabled": true,
   "autoDreamEnabled": true,
   "skipDangerousModePermissionPrompt": true,
+  "statusLine": {
+    "type": "command",
+    "command": "input=$(cat); cwd=$(echo \"$input\" | jq -r '.workspace.current_dir // .cwd'); d=$(printf '%s' \"$cwd\" | sed \"s|^$HOME|~|\"); printf '\\033[34m%s\\033[0m' \"$d\"; b=$(git --no-optional-locks -C \"$cwd\" symbolic-ref --short -q HEAD 2>/dev/null || git --no-optional-locks -C \"$cwd\" rev-parse --short HEAD 2>/dev/null); if [ -n \"$b\" ]; then s=$(git --no-optional-locks -C \"$cwd\" status --porcelain 2>/dev/null); st=$(printf '%s\\n' \"$s\" | grep -c '^[MADRC]'); un=$(printf '%s\\n' \"$s\" | grep -c '^.[MDRC]'); ut=$(printf '%s\\n' \"$s\" | grep -c '^??'); c='\\033[32m'; [ $((st+un)) -gt 0 ] && c='\\033[33m'; x=''; [ \"$st\" -gt 0 ] && x=\"$x +$st\"; [ \"$un\" -gt 0 ] && x=\"$x !$un\"; [ \"$ut\" -gt 0 ] && x=\"$x ?$ut\"; printf ' '\"$c\"'%s%s\\033[0m' \"$b\" \"$x\"; fi"
+  },
   "theme": "light",
   "editorMode": "vim",
   "verbose": true,

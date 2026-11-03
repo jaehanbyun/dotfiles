@@ -157,6 +157,7 @@ update-claude-code() {
 }
 
 alias add_serena='~/bin/add-serena.sh'
+alias cds='claude --dangerously-skip-permissions'
 
 function y() {
 	local tmp="$(mktemp -t "yazi-cwd.XXXXXX")" cwd

@@ -1,7 +1,5 @@
 # Theme
-theme = iTerm2 Solarized Light
-background = FDF6E3
-foreground = 657B83
+theme = Dracula
 
 # Font
 font-family = "Hack Nerd Font"
@@ -20,8 +18,6 @@ window-padding-y = 12
 window-padding-balance = true
 window-save-state = always
 window-colorspace = "display-p3"
-window-decoration = false
-macos-titlebar-style = hidden
 background-opacity = 1
 
 # Mouse
